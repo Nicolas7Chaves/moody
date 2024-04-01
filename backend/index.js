@@ -1,35 +1,28 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-import { getAuth } from "firebase/auth"
-
-
-const express = require('express');
-const cors = require('cors');
+import { initializeApp } from 'firebase/app';
+import { getAnalytics } from 'firebase/analytics';
+import { getAuth } from 'firebase/auth';
+import express from 'express';
+import cors from 'cors';
+import 'dotenv/config';
 
 // Initialize Express app
-const appExpress = express();
-const port = process.env.BACKEND_PORT || 5000;
+const app = express();
+const port = process.env.BACKEND_PORT || 5001; 
 
-appExpress.use(cors());
-appExpress.use(express.json());
 
-appExpress.get('/', (req, res) => {
+app.use(cors());
+app.use(express.json());
+
+app.get('/', (req, res) => {
     res.send('Hello World!');
 });
 
-appExpress.listen(port, () => {
+app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
 });
 
-
-
-
-
 // Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
     apiKey: "AIzaSyAgS_yIZktdOEZMTq-blqohWi23KKMskDE",
     authDomain: "moody-bc3b1.firebaseapp.com",
@@ -41,10 +34,8 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app)
-console.log(auth)
+const firebaseApp = initializeApp(firebaseConfig);
+const auth = getAuth(firebaseApp);
+console.log(auth);
 
-
-
-const analytics = getAnalytics(app);
+// const analytics = getAnalytics(firebaseApp);
