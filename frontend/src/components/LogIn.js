@@ -1,6 +1,6 @@
 import './styles.scss'
 
-function LoggedOut() {
+function LogIn() {
     return (
         <section>
             <h1>test123
@@ -9,4 +9,4 @@ function LoggedOut() {
     )
 }
 
-export default LoggedOut;
+export default LogIn;

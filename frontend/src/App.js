@@ -1,10 +1,10 @@
-import LoggedOut from './components/LoggedOut.js';
+import LogIn from './components/LogIn';
 import './App.scss';
 
 function App() {
   return (
     <>
-      <LoggedOut />
+      <LogIn />
     </>
   );
 }
