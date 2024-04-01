@@ -1,14 +1,14 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
 import { getAnalytics } from 'firebase/analytics';
-import { getAuth } from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import express from 'express';
 import cors from 'cors';
 import 'dotenv/config';
 
 // Initialize Express app
 const app = express();
-const port = process.env.BACKEND_PORT || 5001; 
+const port = process.env.BACKEND_PORT || 5001;
 
 
 app.use(cors());
@@ -36,6 +36,20 @@ const firebaseConfig = {
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
 const auth = getAuth(firebaseApp);
-console.log(auth);
+console.log("auth: ", auth);
 
 // const analytics = getAnalytics(firebaseApp);
+
+function authCreateAcctWithEmail() {
+    createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => { 
+            const user = userCredential.user;
+            console.log(user);
+            
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.error("authcreateAcctWithEmail Error: ", errorCode, errorMessage)
+        });
+}
