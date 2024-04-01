@@ -1,7 +1,9 @@
+import { useNavigate } from 'react-router-dom';
 import './styles.scss'
 import axios from 'axios';
 
 function CreateAccount() {
+    const navigate = useNavigate();
     const handleSubmit = async (e) => {
         e.preventDefault();
         const email = e.target.elements.email.value;
@@ -10,6 +12,7 @@ function CreateAccount() {
         try {
             const response = await axios.post("http://localhost:8000/create-account", {email, password});
             console.log(response)
+            navigate('/');
         } catch (error) {
             console.error("Error creating account:", error);
         }
