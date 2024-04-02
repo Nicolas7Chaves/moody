@@ -17,10 +17,12 @@ app.use(express.json());
 app.get('/', (req, res) => {
     res.send('Hello World!');
 });
+app.use(cors({
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+}));
 
-app.listen(port, () => {
-    console.log(`Server listening on port ${port}`);
-});
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -40,16 +42,39 @@ console.log("auth: ", auth);
 
 // const analytics = getAnalytics(firebaseApp);
 
-function authCreateAcctWithEmail() {
-    createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => { 
-            const user = userCredential.user;
-            console.log(user);
-            
-        })
-        .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            console.error("authcreateAcctWithEmail Error: ", errorCode, errorMessage)
-        });
-}
+// function authCreateAcctWithEmail() {
+//     // const email = emailInputEl.value
+//     // const password = passwordInputEl.value
+//     createUserWithEmailAndPassword(auth, email, password)
+//         .then((userCredential) => { 
+//             const user = userCredential.user;
+//             console.log(user);
+
+//         })
+//         .catch((error) => {
+//             const errorCode = error.code;
+//             const errorMessage = error.message;
+//             console.error("authcreateAcctWithEmail Error: ", errorCode, errorMessage)
+//         });
+// }
+
+app.post('/create-account', async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        console.log("User created:", user.uid);
+        res.status(200).send({ message: 'Account created successfully' });
+    } catch (error) {
+        console.error("Error creating account:", error);
+        res.status(500).send({ error: 'Account creation failed' });
+    }
+});
+
+
+
+app.listen(port, () => {
+    console.log(`Server listening on port ${port}`);
+});
+
