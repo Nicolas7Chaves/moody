@@ -1,7 +1,12 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
 import { getAnalytics } from 'firebase/analytics';
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    signOut
+} from "firebase/auth";
 import express from 'express';
 import cors from 'cors';
 import 'dotenv/config';
@@ -64,7 +69,17 @@ app.post('/create-account', async (req, res) => {
     }
 });
 
+app.post('/logout', async (req, res) => {
+    try {
+        await signOut(auth);
+        res.status(200).send({ message: 'Logged out' });
+    } catch (error) {
+        console.error("Error logging out:", error);
+        res.status(500).send({ error: 'Logout failed' });
+    }   
+}
+);
+
 app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
 });
-
