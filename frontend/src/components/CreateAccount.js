@@ -11,7 +11,7 @@ function CreateAccount() {
 
         try {
             const response = await axios.post("http://localhost:8000/create-account", {email, password});
-            console.log(response)
+            console.log(response);
             navigate('/');
         } catch (error) {
             console.error("Error creating account:", error);
