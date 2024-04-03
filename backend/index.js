@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
 import { getAnalytics } from 'firebase/analytics';
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import express from 'express';
 import cors from 'cors';
 import 'dotenv/config';
@@ -14,9 +14,6 @@ const port = process.env.BACKEND_PORT || 5001;
 app.use(cors());
 app.use(express.json());
 
-app.get('/', (req, res) => {
-    res.send('Hello World!');
-});
 app.use(cors({
     origin: 'http://localhost:3000',
     methods: ['GET', 'POST'],
@@ -40,23 +37,18 @@ const firebaseApp = initializeApp(firebaseConfig);
 const auth = getAuth(firebaseApp);
 console.log("auth: ", auth);
 
-// const analytics = getAnalytics(firebaseApp);
-
-// function authCreateAcctWithEmail() {
-//     // const email = emailInputEl.value
-//     // const password = passwordInputEl.value
-//     createUserWithEmailAndPassword(auth, email, password)
-//         .then((userCredential) => { 
-//             const user = userCredential.user;
-//             console.log(user);
-
-//         })
-//         .catch((error) => {
-//             const errorCode = error.code;
-//             const errorMessage = error.message;
-//             console.error("authcreateAcctWithEmail Error: ", errorCode, errorMessage)
-//         });
-// }
+app.post('/', async (req, res) => {
+    const { email, password } = req.body;
+    try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        res.status(200).json({ message: "Login successful", user: userCredential.user });
+    } catch (error) {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        res.status(500).send({ error: errorMessage, errorCode });
+    }
+});
 
 app.post('/create-account', async (req, res) => {
     const { email, password } = req.body;
@@ -71,8 +63,6 @@ app.post('/create-account', async (req, res) => {
         res.status(500).send({ error: 'Account creation failed' });
     }
 });
-
-
 
 app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
