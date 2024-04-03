@@ -1,6 +1,6 @@
 import './styles.scss'
 import { useNavigate } from 'react-router-dom'
-import axios from 'axios';
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 function LogIn() {
     const navigate = useNavigate();
@@ -9,12 +9,13 @@ function LogIn() {
     }
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const auth = getAuth();
         const email = e.target.elements.email.value;
         const password = e.target.elements.password.value;
         try {
-            const response = await axios.post('http://localhost:8000/', {email, password});
-            console.log(response);
-            navigate('/home')
+            await signInWithEmailAndPassword(auth, email, password);
+            console.log("Login successful");
+            navigate('/home');
         } catch (error) {
             console.error("Error signing into account:", error);
         }

@@ -1,27 +1,28 @@
 import './styles.scss'
 import { useNavigate } from 'react-router-dom'
-import axios from 'axios';
+// import axios from 'axios';
+import { getAuth, signOut } from 'firebase/auth';  
+
 
 
 function LogOut() {
     const navigate = useNavigate();
-    
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+
+    const handleLogout = async () => {
+        const auth = getAuth();
         try {
-            const response = await axios.post('http://localhost:8000/logout');
-            console.log(response);
+            await signOut(auth);
+            console.log("Logged out");
             navigate('/');
         } catch (error) {
             console.error("Error logging out:", error);
         }
     }
     return (
-        <section onSubmit={handleSubmit}>
-            <button type='submit'>Log Out</button>
-        </section>
-    )
+        <button onClick={handleLogout}>Log Out</button>
+    );
 }
+
 
 export default LogOut;
 
