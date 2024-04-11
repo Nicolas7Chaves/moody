@@ -1,6 +1,7 @@
 import './styles.scss'
 import { useNavigate } from 'react-router-dom'
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import GoogleSignIn from './GoogleSignIn';
 
 function LogIn() {
     const navigate = useNavigate();
@@ -32,6 +33,7 @@ function LogIn() {
                 </button>
             </form>
             <button onClick={goToCreateAccount}>Create Account</button>
+            <GoogleSignIn />
         </section>
     )
 }
