@@ -4,6 +4,7 @@ import { auth } from '../firebase-config';
 import LogOut from './LogOut';
 import './styles.scss';
 import Post from './Post';
+import Header from './Header';
 
 function Home() {
     const [userName, setUserName] = useState('');
@@ -25,7 +26,6 @@ function Home() {
             <h1>Home page logged in!</h1>
             {userName && <p>Welcome, {userName}</p>}
             <Post />
-            <LogOut />
         </>
     );
 }

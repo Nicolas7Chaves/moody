@@ -1,10 +1,11 @@
-import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useEffect } from 'react';
 import './App.scss';
 import LogIn from './components/LogIn';
 import CreateAccount from './components/CreateAccount';
-import Home from './components/Home';
+import HomePage from './pages/HomePage';
+import MyProfilePage from './pages/MyProfilePage';
 
 
 function App() {
@@ -31,8 +32,9 @@ function App() {
     <Router>
       <Routes>
         <Route path='/' element={<LogIn />} />
-        <Route path='/home' element={<Home />} />
+        <Route path='/home' element={<HomePage />} />
         <Route path='/create-account' element={<CreateAccount />} />
+        <Route path='/my-profile' element={<MyProfilePage /> } />
       </Routes>
     </Router>
   );
