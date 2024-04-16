@@ -1,9 +1,9 @@
 import './styles.scss'
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { db, auth } from '../firebase-config';
 import { useEffect, useState } from 'react';
 
-function Post(postBody) {
+function Post() {
     const [postText, setPostText] = useState('');
     const [user, setUser] = useState(null);
 
@@ -20,7 +20,8 @@ function Post(postBody) {
             try {
                 const docRef = await addDoc(collection(db, "posts"), {
                     body: postText,
-                    uid: user.uid
+                    uid: user.uid,
+                    createdAt: serverTimestamp()
                 });
                 console.log("Document written with ID: ", docRef.id);
                 setPostText('');
