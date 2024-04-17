@@ -2,30 +2,36 @@ import './styles.scss';
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db, auth } from '../firebase-config';
 import { useEffect, useState } from 'react';
+import { onAuthStateChanged } from "firebase/auth";
 
 function MyPosts() {
     const [posts, setPosts] = useState([]);
 
     useEffect(() => {
-        const fetchPosts = async () => {
-            const user = auth.currentUser;
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
-                const queries = query(collection(db, "posts"), where("uid", "==", user.uid));
-                try {
-                    const querySnapshot = await getDocs(queries);
-                    const postsData = querySnapshot.docs.map(doc => ({
-                        id: doc.id,
-                        data: doc.data()
-                    }));
-                    setPosts(postsData);
-                    console.log("Fetched posts data:", postsData);
-                } catch (error) {
-                    console.error("Error fetching posts:", error);
-                }
+                const fetchPosts = async () => {
+                    const queries = query(collection(db, "posts"), where("uid", "==", user.uid));
+                    try {
+                        const querySnapshot = await getDocs(queries);
+                        const postsData = querySnapshot.docs.map(doc => ({
+                            id: doc.id,
+                            data: doc.data()
+                        }));
+                        setPosts(postsData);
+                        console.log("Fetched posts data:", postsData);
+                    } catch (error) {
+                        console.error("Error fetching posts:", error);
+                    }
+                };
+                fetchPosts();
+            } else {
+                setPosts([]);
             }
-        };
-        fetchPosts();
+        });
+        return () => unsubscribe();
     }, []);
+
 
     function displayDate(firebaseDate) {
         if (!firebaseDate) return '';
