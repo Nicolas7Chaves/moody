@@ -12,7 +12,7 @@ const home = () => {
     navigate('/home')
 }
     return (
-        <header>
+        <header className='header'>
             <a onClick={home}>Home</a>
             <a onClick={myProfile} >Profile</a>
             <LogOut />

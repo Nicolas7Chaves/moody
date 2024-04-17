@@ -17,6 +17,7 @@ function Post() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (user) {
+            // const formattedText = postText.replace(/\n/g, "<br>");
             try {
                 const docRef = await addDoc(collection(db, "posts"), {
                     body: postText,
@@ -37,8 +38,9 @@ function Post() {
     return (
         <>
             <form onSubmit={handleSubmit}>
-                <input type="text" placeholder="What do you want to post?"
-                    value={postText} onChange={(e) => setPostText(e.target.value)} />
+                <textarea  className="posting" placeholder="What do you want to post?"
+                    value={postText} onChange={(e) => setPostText(e.target.value)}>
+                    </textarea>
                 <button type='submit'>Post</button>
             </form>
         </>

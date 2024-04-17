@@ -1,5 +1,5 @@
 import './styles.scss';
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import { db, auth } from '../firebase-config';
 import { useEffect, useState } from 'react';
 import { onAuthStateChanged } from "firebase/auth";
@@ -11,7 +11,10 @@ function MyPosts() {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
                 const fetchPosts = async () => {
-                    const queries = query(collection(db, "posts"), where("uid", "==", user.uid));
+                    const queries = query(collection(db, "posts"),
+                    where("uid", "==", user.uid),
+                    orderBy("createdAt", "desc")
+                    );
                     try {
                         const querySnapshot = await getDocs(queries);
                         const postsData = querySnapshot.docs.map(doc => ({
@@ -53,7 +56,7 @@ function MyPosts() {
             {posts.map(post => {
                 return ( 
                     <div className='post' key={post.id}>
-                        <p>{post.data.body}</p>
+                        <p className='post__body'>{post.data.body}</p>
                         <p>{displayDate(post.data.createdAt)}</p>
                     </div>
                 );
