@@ -2,19 +2,21 @@ import LogOut from './LogOut';
 import './styles.scss'
 import { useNavigate } from 'react-router-dom';
 function Header() {
-const navigate = useNavigate();
+    const navigate = useNavigate();
 
-const myProfile = () => {
-    navigate('/my-profile')
-}
+    const myProfile = () => {
+        navigate('/my-profile')
+    }
 
-const home = () => {
-    navigate('/home')
-}
+    const home = () => {
+        navigate('/home')
+    }
     return (
         <header className='header'>
-            <a onClick={home}>Home</a>
-            <a onClick={myProfile} >Profile</a>
+            <div className='header__divide'>
+                <a className='header__item' onClick={home}>Home</a>
+                <a className='header__item' onClick={myProfile} >Profile</a>
+            </div>
             <LogOut />
         </header>
     )

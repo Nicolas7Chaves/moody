@@ -19,7 +19,7 @@ function LogOut() {
         }
     }
     return (
-        <button onClick={handleLogout}>Log Out</button>
+        <button className='logout' onClick={handleLogout}>Log Out</button>
     );
 }
 

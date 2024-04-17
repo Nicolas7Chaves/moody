@@ -51,13 +51,13 @@ function MyPosts() {
     }
     
     return (
-        <div>
-            <h1>My Posts</h1>
+        <div className='my-posts'>
+            <h1 className='my-posts__title'>My Posts</h1>
             {posts.map(post => {
                 return ( 
-                    <div className='post' key={post.id}>
-                        <p className='post__body'>{post.data.body}</p>
-                        <p>{displayDate(post.data.createdAt)}</p>
+                    <div className='my-posts__post' key={post.id}>
+                        <p className='my-posts__post-body'>{post.data.body}</p>
+                        <p className='my-posts__date'>{displayDate(post.data.createdAt)}</p>
                     </div>
                 );
             })}
