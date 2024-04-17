@@ -16,12 +16,25 @@
         padding: 20px;
         border: 1px solid #ccc;
         border-radius: 5px;
+        display: flex;
+        flex-direction: column;
     }
+
     &__post-body {
         white-space: pre-wrap;
     }
-}
 
+    &__delete {
+        width: fit-content;
+        transition: background-color 1s;
+        border: 1px;
+        border-radius: 5px;
+        padding: .5rem;
+        &:hover {
+            background-color: rgba(246, 102, 102, 0.523);
+        }
+    }
+}
 
 .posting {
     margin: 20px;

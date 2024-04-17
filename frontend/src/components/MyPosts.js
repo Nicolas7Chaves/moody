@@ -1,5 +1,5 @@
 import './styles.scss';
-import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
+import { collection, getDocs, orderBy, query, where, deleteDoc, doc } from "firebase/firestore";
 import { db, auth } from '../firebase-config';
 import { useEffect, useState } from 'react';
 import { onAuthStateChanged } from "firebase/auth";
@@ -12,8 +12,8 @@ function MyPosts() {
             if (user) {
                 const fetchPosts = async () => {
                     const queries = query(collection(db, "posts"),
-                    where("uid", "==", user.uid),
-                    orderBy("createdAt", "desc")
+                        where("uid", "==", user.uid),
+                        orderBy("createdAt", "desc")
                     );
                     try {
                         const querySnapshot = await getDocs(queries);
@@ -49,15 +49,27 @@ function MyPosts() {
         minutes = minutes < 10 ? "0" + minutes : minutes;
         return `${day} ${month} ${year} - ${hours}:${minutes}`;
     }
-    
+
+
+    async function handleDeletePost(postId) {
+        try {
+            await deleteDoc(doc(db, "posts", postId));
+            console.log("Post successfully deleted: ", postId);
+            setPosts(posts.filter(post => post.id !== postId)); // Remove the deleted post from the state
+        } catch (error) {
+            console.error("Error deleting post:", error);
+        }
+    }
+
     return (
         <div className='my-posts'>
             <h1 className='my-posts__title'>My Posts</h1>
             {posts.map(post => {
-                return ( 
+                return (
                     <div className='my-posts__post' key={post.id}>
                         <p className='my-posts__post-body'>{post.data.body}</p>
                         <p className='my-posts__date'>{displayDate(post.data.createdAt)}</p>
+                        <button className='my-posts__delete' onClick={() => handleDeletePost(post.id)}>🗑️</button>
                     </div>
                 );
             })}
