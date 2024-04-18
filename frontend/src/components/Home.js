@@ -22,11 +22,10 @@ function Home() {
     }, []);
 
     return (
-        <>
-            <h1>Home page logged in!</h1>
-            {userName && <p>Welcome, {userName}</p>}
+        <div className='home'>
+            {userName && <p className='home__welcome'>Welcome, {userName}</p>}
             <Post />
-        </>
+        </div>
     );
 }
 

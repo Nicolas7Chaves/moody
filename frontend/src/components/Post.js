@@ -36,14 +36,14 @@ function Post() {
 
     }
     return (
-        <>
-            <form onSubmit={handleSubmit}>
-                <textarea  className="posting" placeholder="What do you want to post?"
+        <div className='posting'>
+            <form className='posting__form' onSubmit={handleSubmit}>
+                <textarea  className="posting__textarea" placeholder="What do you want to post?"
                     value={postText} onChange={(e) => setPostText(e.target.value)}>
                     </textarea>
-                <button type='submit'>Post</button>
+                <button className='posting__button' type='submit'>Post</button>
             </form>
-        </>
+        </div>
     )
 }
 

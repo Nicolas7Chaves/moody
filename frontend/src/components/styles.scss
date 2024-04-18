@@ -30,6 +30,7 @@
         border: 1px;
         border-radius: 5px;
         padding: .5rem;
+
         &:hover {
             background-color: rgba(246, 102, 102, 0.523);
         }
@@ -37,13 +38,30 @@
 }
 
 .posting {
-    margin: 20px;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    resize: none;
-    height: 20rem;
-    width: 20rem;
+    margin: 2rem;
+    display: flex;
+    flex-direction: column;
+    &__form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__textarea {
+        margin-bottom: 1rem;
+        padding: 2rem;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        resize: none;
+        height: 10rem;
+        align-items: center;
+    }
+    &__button {
+        padding: 1rem;
+        font-weight: $fw-bold;
+        font-size: $fs-h3;
+        width: 50%;
+        margin: auto;
+    }
 }
 
 .header {
@@ -89,5 +107,15 @@
     &:hover {
         cursor: pointer;
         background-color: darken($clr-accent, 10%);
+    }
+}
+
+.home {
+    display: flex;
+    flex-direction: column;
+
+    &__welcome {
+        margin-left: 2rem;
+        font-size: $fs-h3;
     }
 }
