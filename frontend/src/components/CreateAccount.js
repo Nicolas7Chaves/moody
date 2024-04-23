@@ -9,16 +9,20 @@ function CreateAccount() {
         e.preventDefault();
         const email = e.target.elements.email.value;
         const password = e.target.elements.password.value;
-        const auth = getAuth(); 
+        const auth = getAuth();
         console.log(auth)
 
         try {
             await createUserWithEmailAndPassword(auth, email, password);
             console.log("Account creation successful");
-            navigate('/'); 
+            navigate('/');
         } catch (error) {
             console.error("Error creating account:", error.message);
         }
+    }
+
+    const goBack = () => {
+        navigate('/');
     }
 
     return (
@@ -29,6 +33,7 @@ function CreateAccount() {
                 <input name="password" type="password" placeholder="password" />
                 <button type='submit'>Create Account</button>
             </form>
+                <button onClick={goBack}>Return</button>
         </>
     );
 }
