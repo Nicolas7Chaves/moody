@@ -5,6 +5,7 @@ import LogOut from './LogOut';
 import './styles.scss';
 import Post from './Post';
 import Header from './Header';
+import AllPosts from './AllPosts';
 
 function Home() {
     const [userName, setUserName] = useState('');
@@ -25,6 +26,7 @@ function Home() {
         <div className='home'>
             {userName && <p className='home__welcome'>Welcome, {userName}</p>}
             <Post />
+            <AllPosts />
         </div>
     );
 }

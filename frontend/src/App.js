@@ -21,7 +21,7 @@ function RequireAuth({ children }) {
   }, [auth]);
 
   if (!user) {
-    return <Navigate to="/create-account" state={{ from: location }} />;
+    return <Navigate to="/" state={{ from: location }} />;
   }
 
   return children;

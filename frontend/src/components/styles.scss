@@ -119,3 +119,15 @@
         font-size: $fs-h3;
     }
 }
+
+.filter {
+display: flex;
+margin-left: 1.25rem;
+margin-right: 1.25rem;
+justify-content: space-between;
+    &__button {
+        padding: .5rem;
+        font-weight: $fw-bold;
+        width: 8rem;
+    }
+}

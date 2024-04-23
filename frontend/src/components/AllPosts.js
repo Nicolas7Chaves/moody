@@ -4,7 +4,8 @@ import { db, auth } from '../firebase-config';
 import { useEffect, useState } from 'react';
 import { onAuthStateChanged } from "firebase/auth";
 
-function MyPosts() {
+
+function AllPosts() {
     const [posts, setPosts] = useState([]);
 
     useEffect(() => {
@@ -12,13 +13,13 @@ function MyPosts() {
             if (user) {
                 const fetchPosts = async () => {
                     const queries = query(collection(db, "posts"),
-                        where("uid", "==", user.uid),
                         orderBy("createdAt", "desc")
                     );
                     try {
                         const querySnapshot = await getDocs(queries);
                         const postsData = querySnapshot.docs.map(doc => ({
                             id: doc.id,
+                            displayName: user.displayName,
                             data: doc.data()
                         }));
                         setPosts(postsData);
@@ -49,15 +50,6 @@ function MyPosts() {
         return `${day} ${month} ${year} - ${hours}:${minutes}`;
     }
 
-    async function handleDeletePost(postId) {
-        try {
-            await deleteDoc(doc(db, "posts", postId));
-            console.log("Post successfully deleted: ", postId);
-            setPosts(posts.filter(post => post.id !== postId));
-        } catch (error) {
-            console.error("Error deleting post:", error);
-        }
-    }
 
     // Function to fetch posts for today
     const fetchPostsForToday = async () => {
@@ -69,7 +61,7 @@ function MyPosts() {
 
         const postsRef = collection(db, "posts");
 
-        const q = query(postsRef, where("uid", "==", auth.currentUser.uid),
+        const q = query(postsRef, 
             where("createdAt", ">=", startOfDay),
             where("createdAt", "<=", endOfDay),
             orderBy("createdAt", "desc")
@@ -100,7 +92,7 @@ function MyPosts() {
         // Fetch posts within the current week
         const postsRef = collection(db, "posts");
 
-        const q = query(postsRef, where("uid", "==", auth.currentUser.uid),
+        const q = query(postsRef, 
             where("createdAt", ">=", startOfWeek),
             where("createdAt", "<=", endOfWeek),
             orderBy("createdAt", "desc")
@@ -129,7 +121,7 @@ function MyPosts() {
         // Fetch posts within the current month
         const postsRef = collection(db, "posts");
 
-        const q = query(postsRef, where("uid", "==", auth.currentUser.uid),
+        const q = query(postsRef, 
             where("createdAt", ">=", startOfMonth),
             where("createdAt", "<=", endOfMonth),
             orderBy("createdAt", "desc")
@@ -153,7 +145,7 @@ function MyPosts() {
     const fetchAllPosts = async () => {
         const postsRef = collection(db, "posts");
 
-        const q = query(postsRef, where("uid", "==", auth.currentUser.uid),
+        const q = query(postsRef, 
             orderBy("createdAt", "desc")
         );
 
@@ -173,7 +165,7 @@ function MyPosts() {
 
     return (
         <div className='my-posts'>
-            <h1 className='my-posts__title'>My Posts</h1>
+            <h1 className='my-posts__title'>Feed</h1>
             <div className='filter'>
                 <button className='filter__button' onClick={fetchPostsForToday}>Today</button>
                 <button className='filter__button' onClick={fetchPostsForThisWeek}>Week</button>
@@ -182,13 +174,13 @@ function MyPosts() {
             </div>
             {posts.map(post => (
                 <div className='my-posts__post' key={post.id}>
+                    <p>{post.displayName || "user"}</p>
                     <p className='my-posts__post-body'>{post.data.body}</p>
                     <p className='my-posts__date'>{displayDate(post.data.createdAt)}</p>
-                    <button className='my-posts__delete' onClick={() => handleDeletePost(post.id)}>🗑️</button>
                 </div>
             ))}
         </div>
     );
 }
 
-export default MyPosts;
+export default AllPosts;
