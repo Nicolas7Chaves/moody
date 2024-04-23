@@ -1,40 +1,55 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import './App.scss';
 import LogIn from './components/LogIn';
 import CreateAccount from './components/CreateAccount';
 import HomePage from './pages/HomePage';
 import MyProfilePage from './pages/MyProfilePage';
 
+function RequireAuth({ children }) {
+  const auth = getAuth();
+  const [user, setUser] = useState(auth.currentUser);
+  const location = useLocation();
 
-function App() {
   useEffect(() => {
-    const auth = getAuth();
-    const unsubscribe = onAuthStateChanged(auth, user => {
-      if (user) {
-        console.log("User is signed in", user);
-        // You can use navigate function here if you want to redirect the user to /home
-        // navigate('/home'); // Uncomment this and see the note below about navigation
-      } else {
-        console.log("No user is signed in.");
-        // navigate('/'); // Redirect to login page
-      }
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUser(user);
     });
 
-    return () => unsubscribe(); // Cleanup subscription on unmount
-  }, []);
+    return () => unsubscribe();
+  }, [auth]);
 
-  // Note: Direct navigation inside useEffect in App.js may require a different approach
-  // because useNavigate() hook can only be used inside components that are children of <Router>
+  if (!user) {
+    return <Navigate to="/create-account" state={{ from: location }} />;
+  }
 
+  return children;
+}
+
+
+function App() {
   return (
     <Router>
       <Routes>
         <Route path='/' element={<LogIn />} />
-        <Route path='/home' element={<HomePage />} />
         <Route path='/create-account' element={<CreateAccount />} />
-        <Route path='/my-profile' element={<MyProfilePage /> } />
+        <Route
+          path='/home'
+          element={
+            <RequireAuth>
+              <HomePage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path='/my-profile'
+          element={
+            <RequireAuth>
+              <MyProfilePage />
+            </RequireAuth>
+          }
+        />
       </Routes>
     </Router>
   );

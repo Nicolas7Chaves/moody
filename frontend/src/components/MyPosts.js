@@ -55,7 +55,7 @@ function MyPosts() {
         try {
             await deleteDoc(doc(db, "posts", postId));
             console.log("Post successfully deleted: ", postId);
-            setPosts(posts.filter(post => post.id !== postId)); // Remove the deleted post from the state
+            setPosts(posts.filter(post => post.id !== postId));
         } catch (error) {
             console.error("Error deleting post:", error);
         }
