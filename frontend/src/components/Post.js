@@ -17,13 +17,13 @@ function Post() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (user) {
-            // const formattedText = postText.replace(/\n/g, "<br>");
+            const username = user.displayName || user.email;
             try {
                 const docRef = await addDoc(collection(db, "posts"), {
                     body: postText,
                     uid: user.uid,
                     createdAt: serverTimestamp(),
-                    displayName: user.displayName,
+                    displayName: username,
                 });
                 console.log("Document written with ID: ", docRef.id);
                 setPostText('');

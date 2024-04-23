@@ -19,7 +19,7 @@ function AllPosts() {
                         const querySnapshot = await getDocs(queries);
                         const postsData = querySnapshot.docs.map(doc => ({
                             id: doc.id,
-                            displayName: user.displayName,
+                            displayName: doc.data().displayName,
                             data: doc.data()
                         }));
                         setPosts(postsData);
@@ -71,6 +71,7 @@ function AllPosts() {
             const querySnapshot = await getDocs(q);
             const postsData = querySnapshot.docs.map(doc => ({
                 id: doc.id,
+                displayName: doc.data().displayName,
                 data: doc.data()
             }));
             setPosts(postsData);
@@ -102,6 +103,7 @@ function AllPosts() {
             const querySnapshot = await getDocs(q);
             const postsData = querySnapshot.docs.map(doc => ({
                 id: doc.id,
+                displayName: doc.data().displayName,
                 data: doc.data()
             }));
             setPosts(postsData);
@@ -131,6 +133,7 @@ function AllPosts() {
             const querySnapshot = await getDocs(q);
             const postsData = querySnapshot.docs.map(doc => ({
                 id: doc.id,
+                displayName: doc.data().displayName,
                 data: doc.data()
             }));
             setPosts(postsData);
@@ -153,6 +156,7 @@ function AllPosts() {
             const querySnapshot = await getDocs(q);
             const postsData = querySnapshot.docs.map(doc => ({
                 id: doc.id,
+                displayName: doc.data().displayName,
                 data: doc.data()
             }));
             setPosts(postsData);

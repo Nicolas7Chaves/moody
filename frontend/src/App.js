@@ -10,15 +10,24 @@ import MyProfilePage from './pages/MyProfilePage';
 function RequireAuth({ children }) {
   const auth = getAuth();
   const [user, setUser] = useState(auth.currentUser);
+  const [loading, setLoading] = useState(true);
   const location = useLocation();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
+      setLoading(false);
     });
 
-    return () => unsubscribe();
+    return () => {
+      unsubscribe();
+      setLoading(true);
+    };
   }, [auth]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   if (!user) {
     return <Navigate to="/" state={{ from: location }} />;
