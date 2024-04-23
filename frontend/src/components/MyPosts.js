@@ -63,12 +63,12 @@ function MyPosts() {
     const fetchPostsForToday = async () => {
         const startOfDay = new Date();
         startOfDay.setHours(0, 0, 0, 0);
-        
+
         const endOfDay = new Date();
         endOfDay.setHours(23, 59, 59, 999);
-        
+
         const postsRef = collection(db, "posts");
-        
+
         const q = query(postsRef, where("uid", "==", auth.currentUser.uid),
             where("createdAt", ">=", startOfDay),
             where("createdAt", "<=", endOfDay),
@@ -89,32 +89,94 @@ function MyPosts() {
     };
 
 
-        // Function to fetch all posts
-        const fetchAllPosts = async () => {
-            const postsRef = collection(db, "posts");
-            
-            const q = query(postsRef, where("uid", "==", auth.currentUser.uid),
-                orderBy("createdAt", "desc")
-            );
-    
-            try {
-                const querySnapshot = await getDocs(q);
-                const postsData = querySnapshot.docs.map(doc => ({
-                    id: doc.id,
-                    data: doc.data()
-                }));
-                setPosts(postsData);
-                console.log("Fetched all posts:", postsData);
-            } catch (error) {
-                console.error("Error fetching all posts:", error);
-            }
-        };
+    const fetchPostsForThisWeek = async () => {
+        // Calculate the start and end date of the current week
+        const today = new Date();
+        const startOfWeek = new Date(today);
+        startOfWeek.setDate(today.getDate() - today.getDay()); // Start of the week (Sunday)
+        const endOfWeek = new Date(today);
+        endOfWeek.setDate(today.getDate() + (6 - today.getDay())); // End of the week (Saturday)
+
+        // Fetch posts within the current week
+        const postsRef = collection(db, "posts");
+
+        const q = query(postsRef, where("uid", "==", auth.currentUser.uid),
+            where("createdAt", ">=", startOfWeek),
+            where("createdAt", "<=", endOfWeek),
+            orderBy("createdAt", "desc")
+        );
+
+        try {
+            const querySnapshot = await getDocs(q);
+            const postsData = querySnapshot.docs.map(doc => ({
+                id: doc.id,
+                data: doc.data()
+            }));
+            setPosts(postsData);
+            console.log("Fetched posts for this week:", postsData);
+        } catch (error) {
+            console.error("Error fetching posts for this week:", error);
+        }
+    };
+
+
+    const fetchPostsForThisMonth = async () => {
+        // Calculate the start and end date of the current month
+        const today = new Date();
+        const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+        const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+
+        // Fetch posts within the current month
+        const postsRef = collection(db, "posts");
+
+        const q = query(postsRef, where("uid", "==", auth.currentUser.uid),
+            where("createdAt", ">=", startOfMonth),
+            where("createdAt", "<=", endOfMonth),
+            orderBy("createdAt", "desc")
+        );
+
+        try {
+            const querySnapshot = await getDocs(q);
+            const postsData = querySnapshot.docs.map(doc => ({
+                id: doc.id,
+                data: doc.data()
+            }));
+            setPosts(postsData);
+            console.log("Fetched posts for this month:", postsData);
+        } catch (error) {
+            console.error("Error fetching posts for this month:", error);
+        }
+    };
+
+
+    // Function to fetch all posts
+    const fetchAllPosts = async () => {
+        const postsRef = collection(db, "posts");
+
+        const q = query(postsRef, where("uid", "==", auth.currentUser.uid),
+            orderBy("createdAt", "desc")
+        );
+
+        try {
+            const querySnapshot = await getDocs(q);
+            const postsData = querySnapshot.docs.map(doc => ({
+                id: doc.id,
+                data: doc.data()
+            }));
+            setPosts(postsData);
+            console.log("Fetched all posts:", postsData);
+        } catch (error) {
+            console.error("Error fetching all posts:", error);
+        }
+    };
 
 
     return (
         <div className='my-posts'>
             <h1 className='my-posts__title'>My Posts</h1>
             <button onClick={fetchPostsForToday}>Fetch Today's Posts</button>
+            <button onClick={fetchPostsForThisWeek}>Fetch This Week's Posts</button>
+            <button onClick={fetchPostsForThisMonth}>Fetch This Month's Posts</button>
             <button onClick={fetchAllPosts}>Fetch All Posts</button>
             {posts.map(post => (
                 <div className='my-posts__post' key={post.id}>
