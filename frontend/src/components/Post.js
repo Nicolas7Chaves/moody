@@ -22,7 +22,8 @@ function Post() {
                 const docRef = await addDoc(collection(db, "posts"), {
                     body: postText,
                     uid: user.uid,
-                    createdAt: serverTimestamp()
+                    createdAt: serverTimestamp(),
+                    displayName: user.displayName,
                 });
                 console.log("Document written with ID: ", docRef.id);
                 setPostText('');
