@@ -184,7 +184,7 @@ function AllPosts() {
             </div>
             {posts.map(post => (
                 <div className='my-posts__post' key={post.id}>
-                    <p>{post.displayName || "user"}</p>
+                    <p className='my-posts__user'>{post.displayName || "user"}</p>
                     <p className='my-posts__post-body'>{post.data.body}</p>
                     <p className='my-posts__date'>{displayDate(post.data.createdAt)}</p>
                 </div>

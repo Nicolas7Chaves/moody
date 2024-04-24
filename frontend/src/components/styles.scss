@@ -10,6 +10,7 @@
         font-size: $fs-h1;
         justify-content: center;
         display: flex;
+        color: $clr-accent;
     }
 
     &__post {
@@ -20,10 +21,18 @@
         display: flex;
         flex-direction: column;
     }
-
+    &__user {
+        color: $clr-accent;
+        font-weight: $fw-bold;
+        font-size: $fs-h3;
+    }
     &__post-body {
         white-space: pre-wrap;
+        font-size: 1.15rem;
     }
+    &__date {
+        color: #53535350;
+    }   
 
     &__delete {
         width: fit-content;
@@ -66,6 +75,14 @@
         width: 50%;
         margin: auto;
         max-width: 10rem;
+        border-radius: 5px;
+        border: .5px solid black;
+        cursor: pointer;
+        background-color: $clr-button;
+    }
+
+    &__button:hover {
+        background-color: lighten($clr-accent, 25%);
     }
 }
 
@@ -130,7 +147,7 @@
     margin: auto;
     justify-content: space-between;
     max-width: 40rem;
-    
+
 
     &__button {
         padding: .5rem;
@@ -139,9 +156,17 @@
         background-color: none;
         border-radius: 5px;
         border: .5px solid black;
+        cursor: pointer;
+        background-color: $clr-button
+    }
+
+    &__button:hover {
+        background-color: lighten($clr-accent, 25%);
+
     }
 }
 
 .filter__button.active {
-    background-color: $clr-accent; 
+    background-color: $clr-accent;
+    color: $clr-light;
 }
