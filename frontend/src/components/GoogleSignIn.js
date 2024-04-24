@@ -28,7 +28,7 @@ function GoogleSignIn() {
             });
     }
     return (
-        <button onClick={goToGoogle} >Sign in With Google</button>
+        <button className='log-in__google' onClick={goToGoogle} >Sign in With Google</button>
     )
 }
 export default GoogleSignIn;

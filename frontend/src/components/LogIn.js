@@ -2,6 +2,8 @@ import './styles.scss'
 import { useNavigate } from 'react-router-dom'
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import GoogleSignIn from './GoogleSignIn';
+import logo from '../images/postr.png';
+
 
 function LogIn() {
     const navigate = useNavigate();
@@ -22,17 +24,18 @@ function LogIn() {
         }
     }
     return (
-        <section>
-            <h1>Log In
+        <section className='log-in'>
+            <img src={logo} />
+            <h1 className='log-in__title'>Log In
             </h1>
-            <form onSubmit={handleSubmit}>
-                <input name='email' type="email" placeholder="email" />
-                <input name='password' type="password" placeholder="password" />
-                <button type='submit'>
+            <form className='log-in__form' onSubmit={handleSubmit}>
+                <input className='log-in__input' name='email' type="email" placeholder="email" />
+                <input className='log-in__input' name='password' type="password" placeholder="password" />
+                <button className='log-in__button' type='submit'>
                     Sign In
                 </button>
             </form>
-            <button onClick={goToCreateAccount}>Create Account</button>
+            <button className='log-in__account' onClick={goToCreateAccount}>Create Account</button>
             <GoogleSignIn />
         </section>
     )

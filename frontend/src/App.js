@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from 'react';
-import './App.scss';
+import '../src/components/styles.scss';
 import LogIn from './components/LogIn';
 import CreateAccount from './components/CreateAccount';
 import HomePage from './pages/HomePage';
