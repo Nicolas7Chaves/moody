@@ -192,6 +192,7 @@
         align-items: center;
         width: 100%;
         gap: 0.125rem;
+        height: auto;
     }
 
     &__input,
@@ -231,12 +232,12 @@
         font-size: $fs-h2;
         display: flex;
         color: $clr-light;
-        margin-bottom: 5px;
+        height: auto;
     }
 
     &__logo {
         width: 350px;
-
+        height: auto;
         @include phone {
             width: 250px;
         }
@@ -271,6 +272,7 @@
     &__accounts-section {
         display: flex;
         gap: 1rem;
+        height: auto;
     }
 }
 
