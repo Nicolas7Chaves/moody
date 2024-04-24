@@ -69,16 +69,15 @@
 
 .header {
     background-color: $clr-accent;
-    padding-right: 2rem;
-    padding-left: 2rem;
-    height: 3rem;
+    padding-right: 1rem;
+    padding-left: 1rem;
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    font-size: $fs-h3;
+    padding-top: .5rem;
+    padding-bottom: .5rem;
 
     &__divide {
-        //add a space between the two items
         display: flex;
         justify-content: space-between;
         align-items: center;
