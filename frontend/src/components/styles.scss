@@ -8,7 +8,8 @@
 
     &__title {
         font-size: $fs-h1;
-        margin: 20px;
+        justify-content: center;
+        display: flex;
     }
 
     &__post {
@@ -55,6 +56,7 @@
         resize: none;
         height: 10rem;
         align-items: center;
+        font-size: $fs-h3;
     }
 
     &__button {
@@ -69,8 +71,8 @@
 
 .header {
     background-color: $clr-accent;
-    padding-right: 1rem;
-    padding-left: 1rem;
+    padding-right: $side-margin;
+    padding-left: $side-margin;
     display: flex;
     justify-content: space-between;
     align-items: baseline;
@@ -118,15 +120,14 @@
     flex-direction: column;
 
     &__welcome {
-        margin-left: 2rem;
+        margin-left: $side-margin;
         font-size: $fs-h3;
     }
 }
 
 .filter {
     display: flex;
-    margin-left: 1.25rem;
-    margin-right: 1.25rem;
+    margin: auto;
     justify-content: space-between;
     max-width: 40rem;
 
