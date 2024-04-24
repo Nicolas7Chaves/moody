@@ -2,7 +2,7 @@ import './styles.scss'
 import { useNavigate } from 'react-router-dom'
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import GoogleSignIn from './GoogleSignIn';
-import logo from '../images/postr.png';
+import logo from '../images/postrlogin.png';
 
 
 function LogIn() {
@@ -25,7 +25,7 @@ function LogIn() {
     }
     return (
         <section className='log-in'>
-            <img src={logo} />
+            <img className='log-in__logo' src={logo} />
             <h1 className='log-in__title'>Log In
             </h1>
             <form className='log-in__form' onSubmit={handleSubmit}>
