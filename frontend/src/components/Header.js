@@ -2,6 +2,9 @@ import LogOut from './LogOut';
 import './styles.scss'
 import { useNavigate } from 'react-router-dom';
 import logopic from '../images/postr3.png';
+import homeIcon from '../images/home2.svg';
+import profileIcon from '../images/profile2.svg';
+
 
 function Header() {
     const navigate = useNavigate();
@@ -15,10 +18,10 @@ function Header() {
     }
     return (
         <header className='header'>
-            <img className='header__logo' src={logopic} alt='logo' />
             <div className='header__divide'>
-                <a className='header__item' onClick={home}>Home</a>
-                <a className='header__item' onClick={myProfile} >Profile</a>
+                <img className='header__logo' src={logopic} alt='logo' />
+                <img className='header__item' src={homeIcon} alt='home page' onClick={home} />
+                <img className='header__item' src={profileIcon} alt='profile page' onClick={myProfile} />
             </div>
             <LogOut />
         </header>
