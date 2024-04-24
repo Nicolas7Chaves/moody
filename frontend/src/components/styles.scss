@@ -179,52 +179,62 @@
     background-color: $clr-accent;
     display: flex;
     flex-direction: column;
-    align-items: center;  
-    justify-content: center; 
+    align-items: center;
+    justify-content: center;
     padding: 20px;
-
-    &__title {
-        font-size: $fs-h1;
-        display: flex;
-        color: $clr-light;
-        margin-bottom: 20px; 
-    }
 
     &__form {
         display: flex;
         flex-direction: column;
-        width: 100%;  
         align-items: center;
+        width: 100%;
         gap: 0.125rem;
-
-        @include phone {
-            width: 90%;  
-        }
     }
-    &__input {
+
+    &__input,
+    &__button {
         @include phone {
-            width: 90%;  
+            width: 90%;
         }
+
+        font-weight: $fw-bold;
+        font-size: $fs-h3;
         width: 50%;
         height: 2rem;
+        padding: 0 1rem;
         border-radius: 10px;
-        border: .5px solid #ccc;
-        padding-left: 1rem;
+        border: 0.5px solid #ccc;
         font-size: $fs-h3;
-
+        box-sizing: border-box;
         outline: none;
-        transition: border-color 0.3s ease;
-    
+
         &:focus {
             border-color: #ffffff;
             box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5);
         }
     }
 
+    &__button {
+        cursor: pointer;
+        transition: color 0.3s ease-in-out; // Transition for color change
+        background-color: $clr-light;
+        &:hover {
+            color: $clr-accent; // Changes the text color on hover
+        }
+    }
+
+    &__title {
+        font-size: $fs-h2;
+        display: flex;
+        color: $clr-light;
+        margin-bottom: 5px;
+    }
+
     &__logo {
         width: 350px;
+
         @include phone {
-            width: 250px;  
+            width: 250px;
+        }
     }
-}
 }

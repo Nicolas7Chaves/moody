@@ -26,7 +26,7 @@ function LogIn() {
     return (
         <section className='log-in'>
             <img className='log-in__logo' src={logo} />
-            <h1 className='log-in__title'>Log In
+            <h1 className='log-in__title'>log In
             </h1>
             <form className='log-in__form' onSubmit={handleSubmit}>
                 <input className='log-in__input' name='email' type="email" placeholder="email" />
