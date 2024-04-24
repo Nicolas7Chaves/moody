@@ -3,6 +3,9 @@
 
 * {
     color: $clr-dark;
+    margin: 0;
+    padding: 0;
+    height: 100%;
 }
 
 .my-posts {
@@ -254,6 +257,7 @@
         transition: color 0.3s ease-in-out;
         background-color: $clr-light;
         font-weight: $fw-bold;
+
         &:hover {
             color: $clr-accent;
         }
@@ -263,6 +267,7 @@
         width: 32px;
         cursor: pointer;
     }
+
     &__accounts-section {
         display: flex;
         gap: 1rem;
@@ -270,5 +275,59 @@
 }
 
 .create-account {
-        
+    background-color: $clr-accent;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .125rem;
+    &__form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        gap: 0.125rem;
+        @include phone {
+            width: 70%;
+        }
+    }
+
+    &__input,
+    &__button,
+    &__return {
+        @include phone {
+            width: 90%;
+        }
+
+        font-weight: $fw-bold;
+        font-size: $fs-h3;
+        width: 50%;
+        height: 2rem;
+        padding: 0 1rem;
+        border-radius: 10px;
+        border: 0.5px solid #ccc;
+        font-size: $fs-h3;
+        box-sizing: border-box;
+        outline: none;
+
+        &:focus {
+            border-color: #ffffff;
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5);
+        }
+    }
+
+    &__button,
+    &__return {
+        cursor: pointer;
+        transition: color 0.3s ease-in-out;
+        background-color: $clr-light;
+        &:hover {
+            color: $clr-accent;
+        }
+    }
+
+    &__return {
+        @include phone {
+            width: 30%;
+        }
+    }
 }
