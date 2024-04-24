@@ -1,6 +1,8 @@
 import './styles.scss'
 import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
+import google from '../images/google.svg';
+
 function GoogleSignIn() {
     const provider = new GoogleAuthProvider();
     const navigate = useNavigate();
@@ -28,7 +30,8 @@ function GoogleSignIn() {
             });
     }
     return (
-        <button className='log-in__google' onClick={goToGoogle} >Sign in With Google</button>
+        <img className='log-in__google' onClick={goToGoogle} src={google} alt="Google sign-in"
+            title="Sign in with Google" />
     )
 }
 export default GoogleSignIn;

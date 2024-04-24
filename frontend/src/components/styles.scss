@@ -258,4 +258,17 @@
             color: $clr-accent;
         }
     }
+
+    &__google {
+        width: 32px;
+        cursor: pointer;
+    }
+    &__accounts-section {
+        display: flex;
+        gap: 1rem;
+    }
+}
+
+.create-account {
+        
 }

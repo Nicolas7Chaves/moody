@@ -35,8 +35,11 @@ function LogIn() {
                     Sign In
                 </button>
             </form>
-            <button className='log-in__account' onClick={goToCreateAccount}>Create Account</button>
-            <GoogleSignIn />
+            <div className='log-in__accounts-section'>
+                <button className='log-in__account' onClick={goToCreateAccount}>Create Account</button>
+                <GoogleSignIn />
+            </div>
+
         </section>
     )
 }

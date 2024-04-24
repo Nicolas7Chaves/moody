@@ -26,15 +26,15 @@ function CreateAccount() {
     }
 
     return (
-        <>
-            <h1>Create an Account</h1>
-            <form onSubmit={handleSubmit}>
-                <input name="email" type="email" placeholder="email" />
-                <input name="password" type="password" placeholder="password" />
-                <button type='submit'>Create Account</button>
+        <section className='create-account'>
+            <h1 className='create-account__title'>Create an Account</h1>
+            <form className='create-account__form' onSubmit={handleSubmit}>
+                <input className='create-account__input' name="email" type="email" placeholder="username" />
+                <input className='create-account__input' name="password" type="password" placeholder="password" />
+                <button className='create-account__button' type='submit'>Create Account</button>
             </form>
-                <button onClick={goBack}>Return</button>
-        </>
+                <button className='create-account__return' onClick={goBack}>Return</button>
+        </section>
     );
 }
 
