@@ -21,13 +21,13 @@
 
     &__post {
         height: 10rem;
-        margin: 20px;
+        margin: $side-margin;
         padding: 20px;
         border: 1px solid #ccc;
         border-radius: 5px;
         display: flex;
         flex-direction: column;
-        
+
     }
 
     &__user {
@@ -108,7 +108,7 @@
         cursor: pointer;
         background-color: $clr-button;
         height: auto;
-        
+
     }
 
     &__button:hover {
@@ -122,11 +122,14 @@
     padding-left: $side-margin;
     display: flex;
     justify-content: space-between;
-    align-items: baseline;
+    align-items: center;
     padding-top: .5rem;
     padding-bottom: .5rem;
     height: auto;
-
+    @include phone {
+        padding-right: .5rem;
+        padding-left: .5rem;
+    }
     &__divide {
         display: flex;
         justify-content: space-between;
@@ -177,12 +180,26 @@
 }
 
 .filter {
+    @include phone {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); // Creates two columns
+        grid-template-rows: repeat(2, 1fr); // Creates two rows
+        gap: 10px; // Adds space between buttons
+        margin: auto;
+        justify-content: space-between;
+        max-width: 40rem;
+        height: auto;
+        padding: 10px;
+        justify-items: center
+    }
+
     display: flex;
     margin: auto;
     justify-content: space-between;
     max-width: 40rem;
     height: auto;
-
+    margin-left: $side-margin;
+    margin-right: $side-margin;
     &__button {
         padding: .5rem;
         font-weight: $fw-bold;
@@ -206,6 +223,12 @@
 }
 
 .log-in {
+    &__section {
+        display: flex;
+        flex-direction: column;
+        background-color: $clr-accent;
+    }
+
     background-color: $clr-accent;
     display: flex;
     flex-direction: column;
@@ -376,4 +399,10 @@
             width: 30%;
         }
     }
+}
+
+.footer {
+    margin: auto;
+    height: 1rem;
+    padding-bottom: .5rem;
 }
