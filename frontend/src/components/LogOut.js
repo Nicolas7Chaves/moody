@@ -2,7 +2,7 @@ import './styles.scss'
 import { useNavigate } from 'react-router-dom'
 // import axios from 'axios';
 import { getAuth, signOut } from 'firebase/auth';  
-import logout from '../images/logout2.svg';
+import logout from '../images/logout.svg';
 
 
 function LogOut() {

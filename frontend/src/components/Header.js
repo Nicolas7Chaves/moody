@@ -1,9 +1,9 @@
 import LogOut from './LogOut';
 import './styles.scss'
 import { useNavigate } from 'react-router-dom';
-import logopic from '../images/postr3.png';
-import homeIcon from '../images/home2.svg';
-import profileIcon from '../images/profile2.svg';
+import logopic from '../images/postr.png';
+import homeIcon from '../images/home.svg';
+import profileIcon from '../images/profile.svg';
 
 
 function Header() {

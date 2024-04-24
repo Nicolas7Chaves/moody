@@ -24,7 +24,7 @@ function Home() {
 
     return (
         <div className='home'>
-            {userName && <p className='home__welcome'>Welcome, {userName}</p>}
+            {userName && <p className='home__welcome'>Hey, {userName}</p>}
             <Post />
             <AllPosts />
         </div>
