@@ -216,10 +216,11 @@
 
     &__button {
         cursor: pointer;
-        transition: color 0.3s ease-in-out; // Transition for color change
+        transition: color 0.3s ease-in-out;
         background-color: $clr-light;
+
         &:hover {
-            color: $clr-accent; // Changes the text color on hover
+            color: $clr-accent;
         }
     }
 
@@ -235,6 +236,26 @@
 
         @include phone {
             width: 250px;
+        }
+    }
+
+    &__account {
+        width: 10rem;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        background-color: $clr-light;
+        height: 2rem;
+        padding: 0 1rem;
+        border-radius: 10px;
+        border: 0.5px solid #ccc;
+        box-sizing: border-box;
+        outline: none;
+        cursor: pointer;
+        transition: color 0.3s ease-in-out;
+        background-color: $clr-light;
+        font-weight: $fw-bold;
+        &:hover {
+            color: $clr-accent;
         }
     }
 }
