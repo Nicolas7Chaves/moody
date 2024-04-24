@@ -27,7 +27,7 @@ function LogIn() {
         <section className='log-in'>
             <img className='log-in__logo' src={logo} />
             <form className='log-in__form' onSubmit={handleSubmit}>
-                <input className='log-in__input' name='email' type="email" placeholder="username" />
+                <input className='log-in__input' name='email' type="email" placeholder="email" />
                 <input className='log-in__input' name='password' type="password" placeholder="password" />
                 <button className='log-in__button' type='submit'>
                     Sign In

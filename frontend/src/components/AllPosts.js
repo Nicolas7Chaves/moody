@@ -1,5 +1,5 @@
 import './styles.scss';
-import { collection, getDocs, orderBy, query, where, deleteDoc, doc } from "firebase/firestore";
+import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import { db, auth } from '../firebase-config';
 import { useEffect, useState } from 'react';
 import { onAuthStateChanged } from "firebase/auth";
@@ -21,7 +21,7 @@ function AllPosts() {
                         const querySnapshot = await getDocs(queries);
                         const postsData = querySnapshot.docs.map(doc => ({
                             id: doc.id,
-                            displayName: doc.data().displayName,
+                            displayName: doc.data().displayName || doc.data().displayName,
                             data: doc.data()
                         }));
                         setPosts(postsData);

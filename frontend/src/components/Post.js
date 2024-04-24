@@ -6,7 +6,6 @@ import { useEffect, useState } from 'react';
 function Post() {
     const [postText, setPostText] = useState('');
     const [user, setUser] = useState(null);
-
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(user => {
             setUser(user);
@@ -27,6 +26,7 @@ function Post() {
                 });
                 console.log("Document written with ID: ", docRef.id);
                 setPostText('');
+                window.location.reload();
             } catch (e) {
                 console.error("Error adding document: ", e);
             }

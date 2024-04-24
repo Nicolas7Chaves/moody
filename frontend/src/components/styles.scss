@@ -16,6 +16,7 @@
         display: flex;
         color: $clr-accent;
         height: auto;
+        margin-bottom: 1rem;
     }
 
     &__post {
@@ -53,6 +54,7 @@
         border-radius: 5px;
         padding: .5rem;
         height: auto;
+        margin-top: .5rem;
 
         &:hover {
             background-color: rgba(246, 102, 102, 0.523);
@@ -167,6 +169,7 @@
     flex-direction: column;
 
     &__welcome {
+        margin-top: 1rem;
         height: auto;
         margin-left: $side-margin;
         font-size: $fs-h3;
