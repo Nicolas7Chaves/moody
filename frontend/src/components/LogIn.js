@@ -27,7 +27,7 @@ function LogIn() {
     return (
         <div className='log-in__section'>
             <section className='log-in'>
-                <img className='log-in__logo' src={logo} />
+                <img className='log-in__logo' src={logo} alt='logo'/>
                 <form className='log-in__form' onSubmit={handleSubmit}>
                     <input className='log-in__input' name='email' type="email" placeholder="email" />
                     <input className='log-in__input' name='password' type="password" placeholder="password" />
