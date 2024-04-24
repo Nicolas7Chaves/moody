@@ -2,10 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebase-config';
 import { doc, getDoc, getFirestore } from "firebase/firestore"; 
-import LogOut from './LogOut';
 import './styles.scss';
 import Post from './Post';
-import Header from './Header';
 import AllPosts from './AllPosts';
 
 function Home() {

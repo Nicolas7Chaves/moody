@@ -1,11 +1,11 @@
 import { initializeApp } from 'firebase/app';
-import { getAnalytics } from 'firebase/analytics';
+// import { getAnalytics } from 'firebase/analytics';
 import {
     getAuth,
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    signOut,
-    onAuthStateChanged
+    // createUserWithEmailAndPassword,
+    // signInWithEmailAndPassword,
+    // signOut,
+    // onAuthStateChanged
 } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 

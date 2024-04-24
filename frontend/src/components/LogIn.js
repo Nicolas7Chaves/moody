@@ -2,7 +2,7 @@ import './styles.scss'
 import { useNavigate } from 'react-router-dom'
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import GoogleSignIn from './GoogleSignIn';
-import logo from '../images/postrlogin.png';
+import logo from '../images/postrBanner.png';
 import Footer from './Footer';
 
 
