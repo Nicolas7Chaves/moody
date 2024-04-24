@@ -15,15 +15,18 @@
         justify-content: center;
         display: flex;
         color: $clr-accent;
+        height: auto;
     }
 
     &__post {
+        height: 10rem;
         margin: 20px;
         padding: 20px;
         border: 1px solid #ccc;
         border-radius: 5px;
         display: flex;
         flex-direction: column;
+        
     }
 
     &__user {
@@ -39,6 +42,8 @@
 
     &__date {
         color: #53535350;
+        display: flex;
+        align-items: flex-end;
     }
 
     &__delete {
@@ -47,6 +52,7 @@
         border: 1px;
         border-radius: 5px;
         padding: .5rem;
+        height: auto;
 
         &:hover {
             background-color: rgba(246, 102, 102, 0.523);
@@ -55,6 +61,7 @@
 }
 
 .posting {
+    height: auto;
     margin: 2rem;
     display: flex;
     flex-direction: column;
@@ -62,6 +69,7 @@
     &__form {
         display: flex;
         flex-direction: column;
+        height: auto;
     }
 
     &__textarea {
@@ -73,6 +81,17 @@
         height: 10rem;
         align-items: center;
         font-size: $fs-h3;
+        border-radius: 10px;
+        border: 0.5px solid #ccc;
+        font-size: $fs-h3;
+        box-sizing: border-box;
+        outline: none;
+
+        &:focus {
+            border-color: #afafaf;
+            border: 1px solid;
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5);
+        }
     }
 
     &__button {
@@ -86,6 +105,8 @@
         border: .5px solid black;
         cursor: pointer;
         background-color: $clr-button;
+        height: auto;
+        
     }
 
     &__button:hover {
@@ -102,6 +123,7 @@
     align-items: baseline;
     padding-top: .5rem;
     padding-bottom: .5rem;
+    height: auto;
 
     &__divide {
         display: flex;
@@ -131,6 +153,7 @@
     color: $clr-light;
     border: none;
     width: 35px;
+    height: auto;
 
     &:hover {
         border-radius: 10px;
@@ -144,6 +167,7 @@
     flex-direction: column;
 
     &__welcome {
+        height: auto;
         margin-left: $side-margin;
         font-size: $fs-h3;
     }
@@ -154,7 +178,7 @@
     margin: auto;
     justify-content: space-between;
     max-width: 40rem;
-
+    height: auto;
 
     &__button {
         padding: .5rem;
@@ -184,7 +208,6 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 20px;
 
     &__form {
         display: flex;
@@ -201,6 +224,7 @@
             width: 90%;
         }
 
+        max-width: 32rem;
         font-weight: $fw-bold;
         font-size: $fs-h3;
         width: 50%;
@@ -238,6 +262,7 @@
     &__logo {
         width: 350px;
         height: auto;
+
         @include phone {
             width: 250px;
         }
@@ -282,12 +307,24 @@
     flex-direction: column;
     align-items: center;
     gap: .125rem;
+
+    &__title {
+        height: auto;
+        margin-top: 5rem;
+        margin-bottom: 1rem;
+        color: $clr-light;
+        font-size: $fs-h2;
+        font-weight: $fw-bold;
+    }
+
     &__form {
         display: flex;
         flex-direction: column;
         align-items: center;
         width: 100%;
         gap: 0.125rem;
+        height: auto;
+
         @include phone {
             width: 70%;
         }
@@ -300,6 +337,7 @@
             width: 90%;
         }
 
+        max-width: 32rem;
         font-weight: $fw-bold;
         font-size: $fs-h3;
         width: 50%;
@@ -322,12 +360,15 @@
         cursor: pointer;
         transition: color 0.3s ease-in-out;
         background-color: $clr-light;
+
         &:hover {
             color: $clr-accent;
         }
     }
 
     &__return {
+        width: 200px;
+
         @include phone {
             width: 30%;
         }

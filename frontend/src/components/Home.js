@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebase-config';
+import { doc, getDoc, getFirestore } from "firebase/firestore"; 
 import LogOut from './LogOut';
 import './styles.scss';
 import Post from './Post';
@@ -11,10 +12,18 @@ function Home() {
     const [userName, setUserName] = useState('');
 
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
+        const db = getFirestore();
+        const unsubscribe = onAuthStateChanged(auth, async (user) => {
             console.log(user);
             if (user) {
-                setUserName(user.displayName || user.email || "User");
+                const userRef = doc(db, "users", user.uid);
+                const userDoc = await getDoc(userRef);
+                if (userDoc.exists()) {
+                    const userData = userDoc.data();
+                    setUserName(userData.username || user.email);
+                } else {
+                    setUserName(user.email || "User");
+                }
             } else {
                 setUserName('');
             }
