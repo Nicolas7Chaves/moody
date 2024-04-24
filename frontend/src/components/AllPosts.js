@@ -7,10 +7,12 @@ import { onAuthStateChanged } from "firebase/auth";
 
 function AllPosts() {
     const [posts, setPosts] = useState([]);
+    const [active, setActive] = useState('');
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
+                setActive('all');
                 const fetchPosts = async () => {
                     const queries = query(collection(db, "posts"),
                         orderBy("createdAt", "desc")
@@ -53,6 +55,7 @@ function AllPosts() {
 
     // Function to fetch posts for today
     const fetchPostsForToday = async () => {
+        setActive('today');
         const startOfDay = new Date();
         startOfDay.setHours(0, 0, 0, 0);
 
@@ -61,7 +64,7 @@ function AllPosts() {
 
         const postsRef = collection(db, "posts");
 
-        const q = query(postsRef, 
+        const q = query(postsRef,
             where("createdAt", ">=", startOfDay),
             where("createdAt", "<=", endOfDay),
             orderBy("createdAt", "desc")
@@ -83,6 +86,7 @@ function AllPosts() {
 
 
     const fetchPostsForThisWeek = async () => {
+        setActive('week');
         // Calculate the start and end date of the current week
         const today = new Date();
         const startOfWeek = new Date(today);
@@ -93,7 +97,7 @@ function AllPosts() {
         // Fetch posts within the current week
         const postsRef = collection(db, "posts");
 
-        const q = query(postsRef, 
+        const q = query(postsRef,
             where("createdAt", ">=", startOfWeek),
             where("createdAt", "<=", endOfWeek),
             orderBy("createdAt", "desc")
@@ -115,6 +119,7 @@ function AllPosts() {
 
 
     const fetchPostsForThisMonth = async () => {
+        setActive('month');
         // Calculate the start and end date of the current month
         const today = new Date();
         const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
@@ -123,7 +128,7 @@ function AllPosts() {
         // Fetch posts within the current month
         const postsRef = collection(db, "posts");
 
-        const q = query(postsRef, 
+        const q = query(postsRef,
             where("createdAt", ">=", startOfMonth),
             where("createdAt", "<=", endOfMonth),
             orderBy("createdAt", "desc")
@@ -146,9 +151,10 @@ function AllPosts() {
 
     // Function to fetch all posts
     const fetchAllPosts = async () => {
+        setActive('all');
         const postsRef = collection(db, "posts");
 
-        const q = query(postsRef, 
+        const q = query(postsRef,
             orderBy("createdAt", "desc")
         );
 
@@ -171,10 +177,10 @@ function AllPosts() {
         <div className='my-posts'>
             <h1 className='my-posts__title'>Feed</h1>
             <div className='filter'>
-                <button className='filter__button' onClick={fetchPostsForToday}>Today</button>
-                <button className='filter__button' onClick={fetchPostsForThisWeek}>Week</button>
-                <button className='filter__button' onClick={fetchPostsForThisMonth}>Month</button>
-                <button className='filter__button' onClick={fetchAllPosts}>All</button>
+                <button className={`filter__button ${active === 'today' ? 'active' : ''}`} onClick={fetchPostsForToday}>Today</button>
+                <button className={`filter__button ${active === 'week' ? 'active' : ''}`} onClick={fetchPostsForThisWeek}>Week</button>
+                <button className={`filter__button ${active === 'month' ? 'active' : ''}`} onClick={fetchPostsForThisMonth}>Month</button>
+                <button className={`filter__button ${active === 'all' ? 'active' : ''}`} onClick={fetchAllPosts}>All</button>
             </div>
             {posts.map(post => (
                 <div className='my-posts__post' key={post.id}>

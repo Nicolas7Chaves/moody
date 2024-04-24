@@ -130,10 +130,18 @@
     margin: auto;
     justify-content: space-between;
     max-width: 40rem;
+    
 
     &__button {
         padding: .5rem;
         font-weight: $fw-bold;
         width: 8rem;
+        background-color: none;
+        border-radius: 5px;
+        border: .5px solid black;
     }
+}
+
+.filter__button.active {
+    background-color: $clr-accent; 
 }
