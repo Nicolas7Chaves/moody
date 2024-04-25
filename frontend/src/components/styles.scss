@@ -9,7 +9,7 @@
 }
 
 .my-posts {
-
+    margin-bottom: 1rem;
     &__title {
         font-size: $fs-h1;
         justify-content: center;
@@ -21,7 +21,7 @@
 
     &__post {
         height: 10rem;
-        margin: $side-margin;
+        margin: 1rem;
         padding: 20px;
         border: 1px solid #ccc;
         border-radius: 5px;
@@ -223,6 +223,12 @@
 }
 
 .log-in {
+    &__error {
+        color: red;
+        font-size: $fs-h3;
+        margin-top: 1rem;
+        height: auto;
+    }
     &__section {
         display: flex;
         flex-direction: column;
@@ -406,3 +412,4 @@
     height: 1rem;
     padding-bottom: .5rem;
 }
+

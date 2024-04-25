@@ -29,7 +29,7 @@ function RequireAuth({ children }) {
     return <div>Loading...</div>;
   }
 
-  if (!user) {
+  if (!user || !user.emailVerified) {
     return <Navigate to="/" state={{ from: location }} />;
   }
 
