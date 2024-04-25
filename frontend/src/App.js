@@ -19,20 +19,23 @@ function RequireAuth({ children }) {
       setLoading(false);
     });
 
-    return () => {
-      unsubscribe();
-      setLoading(true);
-    };
+    return () => unsubscribe();
   }, [auth]);
 
   if (loading) {
     return <div>Loading...</div>;
   }
 
-  if (!user || !user.emailVerified) {
+  if (!user) {
     return <Navigate to="/" state={{ from: location }} />;
   }
 
+  if (!user.emailVerified) {
+    const errorMessage = "Please verify your email address before logging in.";
+    alert(errorMessage); // Consider replacing with a less disruptive UI update
+    return <Navigate to="/" state={{ from: location }} />;
+  }
+  
   return children;
 }
 

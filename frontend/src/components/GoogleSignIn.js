@@ -6,27 +6,20 @@ import google from '../images/google.svg';
 function GoogleSignIn() {
     const provider = new GoogleAuthProvider();
     const navigate = useNavigate();
+    const auth = getAuth();
+
     const goToGoogle = async () => {
-        const auth = getAuth();
         signInWithPopup(auth, provider)
             .then((result) => {
-                
-                // const credential = GoogleAuthProvider.credentialFromResult(result);
-                // const token = credential.accessToken;
-                
-                // const user = result.user;
-                
+                console.log("Google sign-in successful, redirecting to home...");
                 navigate('/home');
-            }).catch((error) => {
-                console.error(error);
-                // Handle Errors here.
-                // const errorCode = error.code;
-                // const errorMessage = error.message;
-                // // The email of the user's account used.
-                // const email = error.customData.email;
-                // // The AuthCredential type that was used.
-                // const credential = GoogleAuthProvider.credentialFromError(error);
-                // // ...
+            }).catch(async (error) => {
+                if (error.code === 'auth/account-exists-with-different-credential') {
+                    const methods = await fetchSignInMethodsForEmail(auth, error.email);
+                    console.error(`Your email is already used with these sign-in methods: ${methods.join(', ')}. Please use one of those methods.`);
+                } else {
+                    console.error("Error with Google sign-in:", error);
+                }
             });
     }
     return (

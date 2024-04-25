@@ -19,9 +19,14 @@ function LogIn() {
         const password = e.target.elements.password.value;
         setError('');
         try {
-            await signInWithEmailAndPassword(auth, email, password);
-            console.log("Login successful");
-            navigate('/home');
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+            if (user && !user.emailVerified) {
+                setError("Please verify your email address to log in.");
+            } else {
+                console.log("Login successful");
+                navigate('/home');
+            }
         } catch (error) {
             console.error("Error signing into account:", error);
             setError(error.message);
