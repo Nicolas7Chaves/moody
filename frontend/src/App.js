@@ -30,9 +30,9 @@ function RequireAuth({ children }) {
     return <Navigate to="/" state={{ from: location }} />;
   }
 
-  if (!user.emailVerified) {
+  if (!user.emailVerified && !user.isAnonymous) {
     const errorMessage = "Please verify your email address before logging in.";
-    alert(errorMessage); // Consider replacing with a less disruptive UI update
+    alert(errorMessage);
     return <Navigate to="/" state={{ from: location }} />;
   }
   

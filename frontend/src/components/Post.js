@@ -6,6 +6,9 @@ import { useEffect, useState } from 'react';
 function Post() {
     const [postText, setPostText] = useState('');
     const [user, setUser] = useState(null);
+
+
+    
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(user => {
             setUser(user);

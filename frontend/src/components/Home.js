@@ -20,7 +20,7 @@ function Home() {
                     const userData = userDoc.data();
                     setUserName(userData.username || user.email);
                 } else {
-                    setUserName(user.email || "User");
+                    setUserName(user.email || "Guest");
                 }
             } else {
                 setUserName('');

@@ -1,6 +1,6 @@
 import './styles.scss'
 import { useNavigate } from 'react-router-dom'
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, signInAnonymously } from "firebase/auth";
 import GoogleSignIn from './GoogleSignIn';
 import logo from '../images/postrBanner.png';
 import Footer from './Footer';
@@ -11,6 +11,18 @@ function LogIn() {
     const [error, setError] = useState('');
     const goToCreateAccount = () => {
         navigate('/create-account')
+    }
+    const handleGuestLogin = async () => {
+        const auth = getAuth();
+        setError('');
+        try {
+            const userCredential = await signInAnonymously(auth);
+            console.log("Guest login successful", userCredential);
+            navigate('/home');
+        } catch (error) {
+            console.error("Error signing in anonymously:", error);
+            setError(error.message);
+        }
     }
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -45,12 +57,12 @@ function LogIn() {
 
                 </form>
                 <div className='log-in__accounts-section'>
+                    <button className='log-in__button' onClick={handleGuestLogin}>Guest Login</button>
                     <button className='log-in__account' onClick={goToCreateAccount}>Create Account</button>
                     <GoogleSignIn />
                 </div>
                 {error && <div className="log-in__error">{error}</div>}
             </section>
-
             <Footer />
         </div>
 
