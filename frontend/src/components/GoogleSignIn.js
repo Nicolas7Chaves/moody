@@ -1,5 +1,5 @@
 import './styles.scss'
-import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { getAuth, GoogleAuthProvider, signInWithPopup, fetchSignInMethodsForEmail } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import google from '../images/google.svg';
 
@@ -15,7 +15,7 @@ function GoogleSignIn() {
                 navigate('/home');
             }).catch(async (error) => {
                 if (error.code === 'auth/account-exists-with-different-credential') {
-                    const methods = await fetchSignInMethodsForEmail(auth, error.email);
+                    const methods = await fetchSignInMethodsForEmail(auth, error.customData.email);
                     console.error(`Your email is already used with these sign-in methods: ${methods.join(', ')}. Please use one of those methods.`);
                 } else {
                     console.error("Error with Google sign-in:", error);
