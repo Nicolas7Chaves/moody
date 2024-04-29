@@ -50,6 +50,7 @@ function CreateAccount() {
             </form>
             <button className='create-account__return' onClick={goBack}>Return</button>
             {error && <div className="log-in__error">{error}</div>}
+            <div>Ready to explore? Create your account and check your email to unlock your new postr account!</div>
         </div>
     );
 }
