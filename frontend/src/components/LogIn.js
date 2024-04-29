@@ -22,6 +22,7 @@ function LogIn() {
             const userCredential = await signInAnonymously(auth);
             console.log("Guest login successful", userCredential);
             navigate('/home');
+            setError('');
         } catch (error) {
             console.error("Error signing in anonymously:", error);
             setError(error.message);
@@ -44,7 +45,26 @@ function LogIn() {
             }
         } catch (error) {
             console.error("Error signing into account:", error);
-            setError(error.message);
+            switch (error.code) {
+                case "auth/wrong-password":
+                    setError("Incorrect password. Please try again.");
+                    break;
+                case "auth/user-not-found":
+                    setError("No user found with this email address.");
+                    break;
+                case "auth/invalid-email":
+                    setError("The email address is not valid.");
+                    break;
+                case "auth/invalid-credential":
+                    setError("The provided credentials are invalid. Please check and try again.");
+                    break;
+                case "auth/too-many-requests":
+                    setError("Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later.");
+                    break;
+                default:
+                    setError("Login failed. Please try again.");
+                    break;
+            }
         }
     }
     return (
@@ -60,13 +80,12 @@ function LogIn() {
                     <button className='log-in__button log-in__button--guest' onClick={handleGuestLogin}>Guest</button>
                 </form>
                 <div className='log-in__accounts-section'>
-                    
+
                     <button className='log-in__account' onClick={goToCreateAccount}>Create Account</button>
                     <GoogleSignIn />
                 </div>
                 <a onClick={forgotPassword} className='forgot'>Forgot Password?</a>
                 {error && <div className="log-in__error">{error}</div>}
-                
             </section>
             <Footer />
         </div>
