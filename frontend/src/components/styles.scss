@@ -223,7 +223,13 @@
 }
 
 .log-in {
-    &__error {
+    background-color: $clr-accent;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+&__error {
         color: red;
         font-size: $fs-h3;
         margin-top: 1rem;
@@ -234,13 +240,6 @@
         flex-direction: column;
         background-color: $clr-accent;
     }
-
-    background-color: $clr-accent;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
     &__form {
         display: flex;
         flex-direction: column;
@@ -249,9 +248,9 @@
         gap: 0.125rem;
         height: auto;
     }
-
     &__input,
     &__button {
+        
         @include phone {
             width: 90%;
         }
@@ -272,6 +271,9 @@
             border-color: #ffffff;
             box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5);
         }
+    }
+    &__button--guest {
+        margin-top: 1rem;
     }
 
     &__button {

@@ -54,10 +54,10 @@ function LogIn() {
                     <button className='log-in__button' type='submit'>
                         Sign In
                     </button>
-
+                    <button className='log-in__button log-in__button--guest' onClick={handleGuestLogin}>Guest</button>
                 </form>
                 <div className='log-in__accounts-section'>
-                    <button className='log-in__button' onClick={handleGuestLogin}>Guest Login</button>
+                    
                     <button className='log-in__account' onClick={goToCreateAccount}>Create Account</button>
                     <GoogleSignIn />
                 </div>
