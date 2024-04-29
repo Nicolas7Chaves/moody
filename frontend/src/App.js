@@ -6,6 +6,8 @@ import LogIn from './components/LogIn';
 import CreateAccount from './components/CreateAccount';
 import HomePage from './pages/HomePage';
 import MyProfilePage from './pages/MyProfilePage';
+import ForgotPasswordPage from './pages/ForgotPasswordPage';
+
 
 function RequireAuth({ children }) {
   const auth = getAuth();
@@ -46,6 +48,7 @@ function App() {
       <Routes>
         <Route path='/' element={<LogIn />} />
         <Route path='/create-account' element={<CreateAccount />} />
+        <Route path='/forgot-password' element={<ForgotPasswordPage />} />
         <Route
           path='/home'
           element={

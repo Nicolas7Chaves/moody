@@ -12,6 +12,9 @@ function LogIn() {
     const goToCreateAccount = () => {
         navigate('/create-account')
     }
+    const forgotPassword = () => {
+        navigate('/forgot-password')
+    }
     const handleGuestLogin = async () => {
         const auth = getAuth();
         setError('');
@@ -61,7 +64,9 @@ function LogIn() {
                     <button className='log-in__account' onClick={goToCreateAccount}>Create Account</button>
                     <GoogleSignIn />
                 </div>
+                <a onClick={forgotPassword} className='forgot'>Forgot Password?</a>
                 {error && <div className="log-in__error">{error}</div>}
+                
             </section>
             <Footer />
         </div>

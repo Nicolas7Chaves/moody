@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
-import { doc, setDoc, getFirestore } from "firebase/firestore"; // Import Firestore functions
+import { doc, setDoc, getFirestore } from "firebase/firestore"; 
 import { useState } from 'react';  
 import './styles.scss';
 

@@ -10,6 +10,7 @@
 
 .my-posts {
     margin-bottom: 1rem;
+
     &__title {
         font-size: $fs-h1;
         justify-content: center;
@@ -126,10 +127,12 @@
     padding-top: .5rem;
     padding-bottom: .5rem;
     height: auto;
+
     @include phone {
         padding-right: .5rem;
         padding-left: .5rem;
     }
+
     &__divide {
         display: flex;
         justify-content: space-between;
@@ -200,6 +203,7 @@
     height: auto;
     margin-left: $side-margin;
     margin-right: $side-margin;
+
     &__button {
         padding: .5rem;
         font-weight: $fw-bold;
@@ -229,17 +233,19 @@
     align-items: center;
     justify-content: center;
 
-&__error {
+    &__error {
         color: red;
         font-size: $fs-h3;
         margin-top: 1rem;
         height: auto;
     }
+
     &__section {
         display: flex;
         flex-direction: column;
         background-color: $clr-accent;
     }
+
     &__form {
         display: flex;
         flex-direction: column;
@@ -248,9 +254,10 @@
         gap: 0.125rem;
         height: auto;
     }
+
     &__input,
     &__button {
-        
+
         @include phone {
             width: 90%;
         }
@@ -272,6 +279,7 @@
             box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5);
         }
     }
+
     &__button--guest {
         margin-top: 1rem;
     }
@@ -415,3 +423,96 @@
     padding-bottom: .5rem;
 }
 
+.forgot {
+    height: auto;
+
+    &:hover {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+}
+
+.forgot-pw {
+    display: flex;
+    color: red;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    background-color: $clr-accent;
+
+    &__title {
+        height: auto;
+        font-size: $fs-h2;
+        font-weight: $fw-bold;
+        margin-bottom: 1rem;
+    }
+
+    &__text {
+        height: auto;
+        font-size: $fs-h3;
+        margin-bottom: 1rem;
+    }
+
+    &__form {
+        display: flex;
+        flex-direction: column;
+        width: 50%;
+        gap: 1rem;
+        height: auto;
+    }
+
+    &__input {
+        height: 2rem;
+        font-weight: $fw-bold;
+        font-size: $fs-h3;
+        padding: 0 1rem;
+        border-radius: 10px;
+        border: 0.5px solid #ccc;
+        font-size: $fs-h3;
+        box-sizing: border-box;
+        outline: none;
+
+        &:focus {
+            border-color: #ffffff;
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5);
+        }
+    }
+
+    &__button {
+        font-weight: $fw-bold;
+        font-size: $fs-h3;
+        height: 2rem;
+        padding: 0 1rem;
+        border-radius: 10px;
+        border: 0.5px solid #ccc;
+        font-size: $fs-h3;
+        box-sizing: border-box;
+        outline: none;
+
+        &:focus {
+            border-color: #ffffff;
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5);
+        }
+
+        &:hover {
+            color: $clr-accent;
+        }
+    }
+}
+
+.return {
+    font-weight: $fw-bold;
+    font-size: $fs-h3;
+    height: 2rem;
+    padding: 0 1rem;
+    border-radius: 10px;
+    border: 0.5px solid #ccc;
+    font-size: $fs-h3;
+    box-sizing: border-box;
+    outline: none;
+    width: 10rem;
+    margin-top: 1rem;
+    &:hover {
+        color: $clr-accent;
+    }
+}
