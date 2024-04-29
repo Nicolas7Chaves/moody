@@ -84,7 +84,7 @@ function LogIn() {
                     <button className='log-in__account' onClick={goToCreateAccount}>Create Account</button>
                     <GoogleSignIn />
                 </div>
-                <a onClick={forgotPassword} className='forgot'>Forgot Password?</a>
+                <div onClick={forgotPassword} className='forgot'>Forgot Password?</div>
                 {error && <div className="log-in__error">{error}</div>}
             </section>
             <Footer />
