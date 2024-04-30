@@ -76,7 +76,6 @@ function MyPosts() {
         }
     }
 
-    // Function to fetch posts for today
     const fetchPostsForToday = async () => {
         setActive('today');
         const startOfDay = new Date();
@@ -124,14 +123,12 @@ function MyPosts() {
 
     const fetchPostsForThisWeek = async () => {
         setActive('week');
-        // Calculate the start and end date of the current week
         const today = new Date();
         const startOfWeek = new Date(today);
         startOfWeek.setDate(today.getDate() - today.getDay()); // Start of the week (Sunday)
         const endOfWeek = new Date(today);
         endOfWeek.setDate(today.getDate() + (6 - today.getDay())); // End of the week (Saturday)
 
-        // Fetch posts within the current week
         const postsRef = collection(db, "posts");
 
         const q = query(postsRef, where("uid", "==", auth.currentUser.uid),
@@ -169,12 +166,10 @@ function MyPosts() {
 
     const fetchPostsForThisMonth = async () => {
         setActive('month');
-        // Calculate the start and end date of the current month
         const today = new Date();
         const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
         const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
 
-        // Fetch posts within the current month
         const postsRef = collection(db, "posts");
 
         const q = query(postsRef, where("uid", "==", auth.currentUser.uid),
@@ -210,7 +205,6 @@ function MyPosts() {
     };
 
 
-    // Function to fetch all posts
     const fetchAllPosts = async () => {
         setActive('all');
         const postsRef = collection(db, "posts");
