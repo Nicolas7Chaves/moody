@@ -35,21 +35,33 @@ function AllPosts() {
         }
     };
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
-            setIsAnonymous(user ? user.isAnonymous : false);
-            setCurrentUser(user);
-            setActive(user ? 'all' : '');
-        });
-        return () => unsubscribe();
-    }, []);
-
-    useEffect(() => {
         if (currentUser) {
-            fetchPosts();
+            const fetchData = async () => {
+                try {
+                    const querySnapshot = await getDocs(queries);
+                    const postsData = querySnapshot.docs.map(doc => {
+                        const data = doc.data();
+                        const likedBy = data.likedBy || [];
+                        const isLiked = currentUser ? likedBy.includes(currentUser.uid) : false;
+                        return {
+                            id: doc.id,
+                            displayName: data.displayName || "user",
+                            data: data,
+                            isLiked: isLiked,
+                            likedBy: likedBy
+                        };
+                    });
+                    setPosts(postsData);
+                    console.log("Fetched posts data:", postsData);
+                } catch (error) {
+                    console.error("Error fetching posts:", error);
+                }
+            };
+            fetchData();
         } else {
             setPosts([]);
         }
-    }, [currentUser, fetchPosts]);
+    }, [currentUser]);
 
     function displayDate(firebaseDate) {
         if (!firebaseDate) return '';
