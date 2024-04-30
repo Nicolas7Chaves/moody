@@ -84,10 +84,11 @@ function AllPosts() {
 
         setPosts(posts.map(p => {
             if (p.id === post.id) {
+                const updatedLikedBy = post.isLiked ? post.likedBy.filter(id => id !== uid) : [...post.likedBy, uid];
                 return {
                     ...p,
                     isLiked: !p.isLiked,
-                    likedBy: p.isLiked ? p.likedBy.filter(id => id !== uid) : [...p.likedBy, uid]
+                    likedBy: updatedLikedBy
                 };
             } else {
                 return p;
