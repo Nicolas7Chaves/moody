@@ -530,3 +530,20 @@
         color: $clr-accent;
     }
 }
+
+.likes {
+    display: flex;
+    &__button {
+        border: none;
+        background-color: none;
+    }
+    &__icons {
+        width: 30px;
+        height: 30px;
+    }
+
+    &__numbers {
+        font-size: $fs-h3;
+        margin-left: .5rem;
+    }
+}

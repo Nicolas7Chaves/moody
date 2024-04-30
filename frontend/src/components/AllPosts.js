@@ -3,7 +3,8 @@ import { collection, getDocs, orderBy, query, where, doc, updateDoc, arrayUnion,
 import { db, auth } from '../firebase-config';
 import { useEffect, useState } from 'react';
 import { onAuthStateChanged } from "firebase/auth";
-
+import like from '../images/like.svg';
+import unlike from '../images/unlike.svg';
 
 function AllPosts() {
     const [posts, setPosts] = useState([]);
@@ -18,11 +19,13 @@ function AllPosts() {
             const postsData = querySnapshot.docs.map(doc => {
                 const data = doc.data();
                 const likedBy = data.likedBy || [];
+                const isLiked = currentUser ? likedBy.includes(currentUser.uid) : false;
+                console.log(`Post ID: ${doc.id}, LikedBy: ${likedBy}, IsLiked: ${isLiked}`);
                 return {
                     id: doc.id,
                     displayName: data.displayName || "user",
                     data: data,
-                    isLiked: currentUser ? likedBy.includes(currentUser.uid) : false,
+                    isLiked: isLiked,
                     likedBy: likedBy
                 };
             });
@@ -32,20 +35,22 @@ function AllPosts() {
             console.error("Error fetching posts:", error);
         }
     };
-
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             setIsAnonymous(user ? user.isAnonymous : false);
             setCurrentUser(user);
-            if (user) {
-                setActive('all');
-                fetchPosts();
-            } else {
-                setPosts([]);
-            }
+            setActive(user ? 'all' : '');
         });
         return () => unsubscribe();
     }, []);
+    
+    useEffect(() => {
+        if (currentUser) {
+            fetchPosts();
+        } else {
+            setPosts([]); 
+        }
+    }, [currentUser]);
 
     function displayDate(firebaseDate) {
         if (!firebaseDate) return '';
@@ -216,14 +221,14 @@ function AllPosts() {
                     <p className='my-posts__user'>{post.displayName || "user"}</p>
                     <p className='my-posts__post-body'>{post.data.body}</p>
                     <p className='my-posts__date'>{displayDate(post.data.createdAt)}</p>
-                    <div className='my-posts__likes'>
+                    <div className='likes'>
                         <button
                             disabled={isAnonymous}
-                            className='my-posts__like'
+                            className='likes__button'
                             onClick={() => handleLike(post)}>
-                            {post.isLiked ? '👎 Unlike' : '👍 Like'}
+                            <img className='likes__icons' src={post.isLiked ? like : unlike} alt={post.isLiked ? "Like" : "Unlike"} />
                         </button>
-                        <span>({post.likedBy.length})</span>
+                        <span className='likes__numbers'>({post.likedBy.length})</span>
                     </div>
                 </div>
             ))}
