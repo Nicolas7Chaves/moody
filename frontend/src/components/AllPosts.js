@@ -49,7 +49,7 @@ function AllPosts() {
         } else {
             setPosts([]);
         }
-    }, [currentUser]);
+    }, [currentUser, fetchPosts]);
 
     function displayDate(firebaseDate) {
         if (!firebaseDate) return '';
