@@ -9,7 +9,8 @@ function AllPosts() {
     const [posts, setPosts] = useState([]);
     const [active, setActive] = useState('');
     const [currentUser, setCurrentUser] = useState(null);
-    
+    const [isAnonymous, setIsAnonymous] = useState(false);
+
     const fetchPosts = async () => {
         const queries = query(collection(db, "posts"), orderBy("createdAt", "desc"));
         try {
@@ -34,10 +35,11 @@ function AllPosts() {
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
+            setIsAnonymous(user ? user.isAnonymous : false);
             setCurrentUser(user);
             if (user) {
                 setActive('all');
-                fetchPosts();  
+                fetchPosts();
             } else {
                 setPosts([]);
             }
@@ -60,7 +62,7 @@ function AllPosts() {
     }
 
     const handleLike = async (post) => {
-        if (!currentUser) {
+        if (!currentUser || isAnonymous) {
             console.log("No user logged in!");
             return;
         }
@@ -75,7 +77,7 @@ function AllPosts() {
                 likedBy: arrayUnion(uid)
             });
         }
-    
+
         setPosts(posts.map(p => {
             if (p.id === post.id) {
                 return {
@@ -88,7 +90,7 @@ function AllPosts() {
             }
         }));
     };
-    
+
     const fetchPostsForToday = async () => {
         setActive('today');
         const startOfDay = new Date();
@@ -214,9 +216,15 @@ function AllPosts() {
                     <p className='my-posts__user'>{post.displayName || "user"}</p>
                     <p className='my-posts__post-body'>{post.data.body}</p>
                     <p className='my-posts__date'>{displayDate(post.data.createdAt)}</p>
-                    <button className='my-posts__like' onClick={() => handleLike(post)}>
-                        ({post.likedBy.length})
-                    </button>
+                    <div className='my-posts__likes'>
+                        <button
+                            disabled={isAnonymous}
+                            className='my-posts__like'
+                            onClick={() => handleLike(post)}>
+                            {post.isLiked ? '👎 Unlike' : '👍 Like'}
+                        </button>
+                        <span>({post.likedBy.length})</span>
+                    </div>
                 </div>
             ))}
         </div>
