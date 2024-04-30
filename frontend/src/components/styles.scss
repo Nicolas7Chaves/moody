@@ -28,7 +28,6 @@
         border-radius: 5px;
         display: flex;
         flex-direction: column;
-
     }
 
     &__user {
@@ -46,6 +45,7 @@
         color: #53535350;
         display: flex;
         align-items: flex-end;
+        height: auto;
     }
 
     &__delete {
@@ -350,6 +350,7 @@
     flex-direction: column;
     align-items: center;
     gap: .125rem;
+
     &__message {
         font-size: $fs-h3;
         margin-top: 1rem;
@@ -507,7 +508,8 @@
         }
     }
 
-    &__message, &__error {
+    &__message,
+    &__error {
         height: auto;
         font-size: $fs-h3;
         margin-top: 1rem;
@@ -526,6 +528,7 @@
     outline: none;
     width: 10rem;
     margin-top: 1rem;
+
     &:hover {
         color: $clr-accent;
     }
@@ -533,17 +536,25 @@
 
 .likes {
     display: flex;
+
     &__button {
+        display: flex;
         border: none;
-        background-color: none;
+        background: none;
+        align-items: center;
     }
+
     &__icons {
+        display: flex;
         width: 30px;
         height: 30px;
+        align-items: center;
     }
 
     &__numbers {
-        font-size: $fs-h3;
+        align-items: center;
+        display: flex;
+        font-size: 1.15rem;
         margin-left: .5rem;
     }
 }

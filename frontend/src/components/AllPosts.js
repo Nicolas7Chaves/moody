@@ -43,7 +43,7 @@ function AllPosts() {
         });
         return () => unsubscribe();
     }, []);
-    
+
     useEffect(() => {
         if (currentUser) {
             fetchPosts();
@@ -220,7 +220,6 @@ function AllPosts() {
                 <div className='my-posts__post' key={post.id}>
                     <p className='my-posts__user'>{post.displayName || "user"}</p>
                     <p className='my-posts__post-body'>{post.data.body}</p>
-                    <p className='my-posts__date'>{displayDate(post.data.createdAt)}</p>
                     <div className='likes'>
                         <button
                             disabled={isAnonymous}
@@ -228,8 +227,10 @@ function AllPosts() {
                             onClick={() => handleLike(post)}>
                             <img className='likes__icons' src={post.isLiked ? like : unlike} alt={post.isLiked ? "Like" : "Unlike"} />
                         </button>
-                        <span className='likes__numbers'>({post.likedBy.length})</span>
+                        <span className='likes__numbers'>{post.likedBy.length}</span>
                     </div>
+                    <p className='my-posts__date'>{displayDate(post.data.createdAt)}</p>
+                    
                 </div>
             ))}
         </div>
