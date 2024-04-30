@@ -1,5 +1,5 @@
 import './styles.scss';
-import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
+import { collection, getDocs, orderBy, query, where, doc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { db, auth } from '../firebase-config';
 import { useEffect, useState } from 'react';
 import { onAuthStateChanged } from "firebase/auth";
@@ -8,29 +8,36 @@ import { onAuthStateChanged } from "firebase/auth";
 function AllPosts() {
     const [posts, setPosts] = useState([]);
     const [active, setActive] = useState('');
+    const [currentUser, setCurrentUser] = useState(null);
+    
+    const fetchPosts = async () => {
+        const queries = query(collection(db, "posts"), orderBy("createdAt", "desc"));
+        try {
+            const querySnapshot = await getDocs(queries);
+            const postsData = querySnapshot.docs.map(doc => {
+                const data = doc.data();
+                const likedBy = data.likedBy || [];
+                return {
+                    id: doc.id,
+                    displayName: data.displayName || "user",
+                    data: data,
+                    isLiked: currentUser ? likedBy.includes(currentUser.uid) : false,
+                    likedBy: likedBy
+                };
+            });
+            setPosts(postsData);
+            console.log("Fetched posts data:", postsData);
+        } catch (error) {
+            console.error("Error fetching posts:", error);
+        }
+    };
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
+            setCurrentUser(user);
             if (user) {
                 setActive('all');
-                const fetchPosts = async () => {
-                    const queries = query(collection(db, "posts"),
-                        orderBy("createdAt", "desc")
-                    );
-                    try {
-                        const querySnapshot = await getDocs(queries);
-                        const postsData = querySnapshot.docs.map(doc => ({
-                            id: doc.id,
-                            displayName: doc.data().displayName || doc.data().displayName,
-                            data: doc.data()
-                        }));
-                        setPosts(postsData);
-                        console.log("Fetched posts data:", postsData);
-                    } catch (error) {
-                        console.error("Error fetching posts:", error);
-                    }
-                };
-                fetchPosts();
+                fetchPosts();  
             } else {
                 setPosts([]);
             }
@@ -52,8 +59,36 @@ function AllPosts() {
         return `${day} ${month} ${year} - ${hours}:${minutes}`;
     }
 
-
-    // Function to fetch posts for today
+    const handleLike = async (post) => {
+        if (!currentUser) {
+            console.log("No user logged in!");
+            return;
+        }
+        const postRef = doc(db, "posts", post.id);
+        const uid = currentUser.uid;
+        if (post.isLiked) {
+            await updateDoc(postRef, {
+                likedBy: arrayRemove(uid)
+            });
+        } else {
+            await updateDoc(postRef, {
+                likedBy: arrayUnion(uid)
+            });
+        }
+    
+        setPosts(posts.map(p => {
+            if (p.id === post.id) {
+                return {
+                    ...p,
+                    isLiked: !p.isLiked,
+                    likedBy: p.isLiked ? p.likedBy.filter(id => id !== uid) : [...p.likedBy, uid]
+                };
+            } else {
+                return p;
+            }
+        }));
+    };
+    
     const fetchPostsForToday = async () => {
         setActive('today');
         const startOfDay = new Date();
@@ -87,14 +122,11 @@ function AllPosts() {
 
     const fetchPostsForThisWeek = async () => {
         setActive('week');
-        // Calculate the start and end date of the current week
         const today = new Date();
         const startOfWeek = new Date(today);
         startOfWeek.setDate(today.getDate() - today.getDay()); // Start of the week (Sunday)
         const endOfWeek = new Date(today);
         endOfWeek.setDate(today.getDate() + (6 - today.getDay())); // End of the week (Saturday)
-
-        // Fetch posts within the current week
         const postsRef = collection(db, "posts");
 
         const q = query(postsRef,
@@ -120,12 +152,9 @@ function AllPosts() {
 
     const fetchPostsForThisMonth = async () => {
         setActive('month');
-        // Calculate the start and end date of the current month
         const today = new Date();
         const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
         const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
-
-        // Fetch posts within the current month
         const postsRef = collection(db, "posts");
 
         const q = query(postsRef,
@@ -148,8 +177,6 @@ function AllPosts() {
         }
     };
 
-
-    // Function to fetch all posts
     const fetchAllPosts = async () => {
         setActive('all');
         const postsRef = collection(db, "posts");
@@ -187,6 +214,9 @@ function AllPosts() {
                     <p className='my-posts__user'>{post.displayName || "user"}</p>
                     <p className='my-posts__post-body'>{post.data.body}</p>
                     <p className='my-posts__date'>{displayDate(post.data.createdAt)}</p>
+                    <button className='my-posts__like' onClick={() => handleLike(post)}>
+                        ({post.likedBy.length})
+                    </button>
                 </div>
             ))}
         </div>
