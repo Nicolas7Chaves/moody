@@ -11,9 +11,8 @@ function AllPosts() {
     const [active, setActive] = useState('');
     const [currentUser, setCurrentUser] = useState(null);
     const [isAnonymous, setIsAnonymous] = useState(false);
-
+    const queries = query(collection(db, "posts"), orderBy("createdAt", "desc"));
     const fetchPosts = async () => {
-        const queries = query(collection(db, "posts"), orderBy("createdAt", "desc"));
         try {
             const querySnapshot = await getDocs(queries);
             const postsData = querySnapshot.docs.map(doc => {
