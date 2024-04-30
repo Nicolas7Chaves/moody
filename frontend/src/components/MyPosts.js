@@ -1,36 +1,51 @@
 import './styles.scss';
-import { collection, getDocs, orderBy, query, where, deleteDoc, doc } from "firebase/firestore";
+import { collection, getDocs, orderBy, query, where, deleteDoc, doc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { db, auth } from '../firebase-config';
 import { useEffect, useState } from 'react';
 import { onAuthStateChanged } from "firebase/auth";
+import like from '../images/like.svg';
+import unlike from '../images/unlike.svg';
+
 
 function MyPosts() {
     const [posts, setPosts] = useState([]);
     const [active, setActive] = useState('');
+    const [currentUser, setCurrentUser] = useState(null);
+    const [isAnonymous, setIsAnonymous] = useState(false);
+
+    const fetchPosts = async () => {
+        const postsRef = collection(db, "posts");
+        const q = query(postsRef, where("uid", "==", auth.currentUser.uid), orderBy("createdAt", "desc"));
+        try {
+            const querySnapshot = await getDocs(q);
+            const postsData = querySnapshot.docs.map(doc => {
+                const data = doc.data();
+                const likedBy = data.likedBy || [];
+                const isLiked = likedBy.includes(auth.currentUser.uid);
+                return {
+                    id: doc.id,
+                    data: data,
+                    isLiked: isLiked,
+                    likedBy: likedBy
+                };
+            });
+            setPosts(postsData);
+            console.log("Fetched posts data:", postsData);
+        } catch (error) {
+            console.error("Error fetching posts:", error);
+        }
+    };
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
                 setActive('all');
-                const fetchPosts = async () => {
-                    const queries = query(collection(db, "posts"),
-                        where("uid", "==", user.uid),
-                        orderBy("createdAt", "desc")
-                    );
-                    try {
-                        const querySnapshot = await getDocs(queries);
-                        const postsData = querySnapshot.docs.map(doc => ({
-                            id: doc.id,
-                            data: doc.data()
-                        }));
-                        setPosts(postsData);
-                        console.log("Fetched posts data:", postsData);
-                    } catch (error) {
-                        console.error("Error fetching posts:", error);
-                    }
-                };
+                setCurrentUser(user);
+                setIsAnonymous(user.isAnonymous);
                 fetchPosts();
             } else {
+                setCurrentUser(null);
+                setIsAnonymous(false);
                 setPosts([]);
             }
         });
@@ -80,16 +95,31 @@ function MyPosts() {
 
         try {
             const querySnapshot = await getDocs(q);
-            const postsData = querySnapshot.docs.map(doc => ({
-                id: doc.id,
-                data: doc.data()
-            }));
-            setPosts(postsData);
-            console.log("Fetched today's posts:", postsData);
+            console.log("Query snapshot:", querySnapshot.docs);
+            const postsData = querySnapshot.docs.map(doc => {
+                const data = doc.data();
+                const likedBy = data.likedBy || [];
+                const isLiked = likedBy.includes(auth.currentUser.uid);
+                return {
+                    id: doc.id,
+                    data: data,
+                    isLiked: isLiked,
+                    likedBy: likedBy
+                };
+            });
+            console.log("Posts data:", postsData);
+            if (postsData.length === 0) {
+                console.log("No posts found for today.");
+            } else {
+                setPosts(postsData);
+                console.log("Fetched today's posts:", postsData);
+            }
         } catch (error) {
             console.error("Error fetching today's posts:", error);
         }
     };
+
+
 
 
     const fetchPostsForThisWeek = async () => {
@@ -112,14 +142,27 @@ function MyPosts() {
 
         try {
             const querySnapshot = await getDocs(q);
-            const postsData = querySnapshot.docs.map(doc => ({
-                id: doc.id,
-                data: doc.data()
-            }));
-            setPosts(postsData);
-            console.log("Fetched posts for this week:", postsData);
+            console.log("Query snapshot:", querySnapshot.docs);
+            const postsData = querySnapshot.docs.map(doc => {
+                const data = doc.data();
+                const likedBy = data.likedBy || [];
+                const isLiked = likedBy.includes(auth.currentUser.uid);
+                return {
+                    id: doc.id,
+                    data: data,
+                    isLiked: isLiked,
+                    likedBy: likedBy
+                };
+            });
+            console.log("Posts data:", postsData);
+            if (postsData.length === 0) {
+                console.log("No posts found for today.");
+            } else {
+                setPosts(postsData);
+                console.log("Fetched today's posts:", postsData);
+            }
         } catch (error) {
-            console.error("Error fetching posts for this week:", error);
+            console.error("Error fetching today's posts:", error);
         }
     };
 
@@ -142,14 +185,27 @@ function MyPosts() {
 
         try {
             const querySnapshot = await getDocs(q);
-            const postsData = querySnapshot.docs.map(doc => ({
-                id: doc.id,
-                data: doc.data()
-            }));
-            setPosts(postsData);
-            console.log("Fetched posts for this month:", postsData);
+            console.log("Query snapshot:", querySnapshot.docs);
+            const postsData = querySnapshot.docs.map(doc => {
+                const data = doc.data();
+                const likedBy = data.likedBy || [];
+                const isLiked = likedBy.includes(auth.currentUser.uid);
+                return {
+                    id: doc.id,
+                    data: data,
+                    isLiked: isLiked,
+                    likedBy: likedBy
+                };
+            });
+            console.log("Posts data:", postsData);
+            if (postsData.length === 0) {
+                console.log("No posts found for today.");
+            } else {
+                setPosts(postsData);
+                console.log("Fetched today's posts:", postsData);
+            }
         } catch (error) {
-            console.error("Error fetching posts for this month:", error);
+            console.error("Error fetching today's posts:", error);
         }
     };
 
@@ -165,17 +221,48 @@ function MyPosts() {
 
         try {
             const querySnapshot = await getDocs(q);
-            const postsData = querySnapshot.docs.map(doc => ({
-                id: doc.id,
-                data: doc.data()
-            }));
-            setPosts(postsData);
-            console.log("Fetched all posts:", postsData);
+            console.log("Query snapshot:", querySnapshot.docs);
+            const postsData = querySnapshot.docs.map(doc => {
+                const data = doc.data();
+                const likedBy = data.likedBy || [];
+                const isLiked = likedBy.includes(auth.currentUser.uid);
+                return {
+                    id: doc.id,
+                    data: data,
+                    isLiked: isLiked,
+                    likedBy: likedBy
+                };
+            });
+            console.log("Posts data:", postsData);
+            if (postsData.length === 0) {
+                console.log("No posts found for today.");
+            } else {
+                setPosts(postsData);
+                console.log("Fetched today's posts:", postsData);
+            }
         } catch (error) {
-            console.error("Error fetching all posts:", error);
+            console.error("Error fetching today's posts:", error);
         }
     };
 
+    const handleLike = async (post) => {
+        if (!currentUser || isAnonymous) {
+            console.log("No user logged in!");
+            return;
+        }
+        const postRef = doc(db, "posts", post.id);
+        const uid = currentUser.uid;
+        if (post.isLiked) {
+            await updateDoc(postRef, {
+                likedBy: arrayRemove(uid)
+            });
+        } else {
+            await updateDoc(postRef, {
+                likedBy: arrayUnion(uid)
+            });
+        }
+        fetchPosts();
+    };
 
     return (
         <div className='my-posts'>
@@ -188,7 +275,16 @@ function MyPosts() {
             </div>
             {posts.map(post => (
                 <div className='my-posts__post' key={post.id}>
+                    <p className='my-posts__user'>You</p>
                     <p className='my-posts__post-body'>{post.data.body}</p>
+                    <div className='likes'>
+                        <button
+                            className='likes__button'
+                            onClick={() => handleLike(post)}>
+                            <img className='likes__icons' src={post.isLiked ? like : unlike} alt={post.isLiked ? "Like" : "Unlike"} />
+                        </button>
+                        <span className='likes__numbers'>{post.likedBy ? post.likedBy.length : 0}</span>
+                    </div>
                     <p className='my-posts__date'>{displayDate(post.data.createdAt)}</p>
                     <button className='my-posts__delete' onClick={() => handleDeletePost(post.id)}>🗑️</button>
                 </div>
