@@ -245,10 +245,14 @@ function AllPosts() {
                 <button className={`filter__button ${active === 'month' ? 'active' : ''}`} onClick={fetchPostsForThisMonth}>Month</button>
                 <button className={`filter__button ${active === 'all' ? 'active' : ''}`} onClick={fetchAllPosts}>All</button>
             </div>
+
             {posts.map(post => (
                 <div className='my-posts__post' key={post.id}>
+                    <div className='my-posts__format'>
                     <p className='my-posts__user'>{post.displayName || "user"}</p>
                     <p className='my-posts__post-body'>{post.data.body}</p>
+                    </div>
+                    <div>
                     <div className='likes'>
                         <button
                             disabled={isAnonymous}
@@ -259,7 +263,7 @@ function AllPosts() {
                         <span className='likes__numbers'>{post.likedBy.length}</span>
                     </div>
                     <p className='my-posts__date'>{displayDate(post.data.createdAt)}</p>
-
+                    </div>
                 </div>
             ))}
         </div>
