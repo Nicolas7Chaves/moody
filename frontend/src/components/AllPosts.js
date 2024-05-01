@@ -1,7 +1,7 @@
 import './styles.scss';
 import { collection, getDocs, orderBy, query, where, doc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { db, auth } from '../firebase-config';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { onAuthStateChanged } from "firebase/auth";
 import like from '../images/like.svg';
 import unlike from '../images/unlike.svg';
@@ -11,8 +11,9 @@ function AllPosts() {
     const [active, setActive] = useState('');
     const [currentUser, setCurrentUser] = useState(null);
     const [isAnonymous, setIsAnonymous] = useState(false);
-    const queries = query(collection(db, "posts"), orderBy("createdAt", "desc"));
-    const fetchPosts = async () => {
+
+    const fetchPosts = useCallback(async () => {
+        const queries = query(collection(db, "posts"), orderBy("createdAt", "desc"));
         try {
             const querySnapshot = await getDocs(queries);
             const postsData = querySnapshot.docs.map(doc => {
@@ -32,35 +33,24 @@ function AllPosts() {
         } catch (error) {
             console.error("Error fetching posts:", error);
         }
-    };
+    }, [currentUser]);
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            setIsAnonymous(user ? user.isAnonymous : false);
+            setCurrentUser(user);
+            setActive(user ? 'all' : '');
+        });
+        return () => unsubscribe();
+    }, []);
+
     useEffect(() => {
         if (currentUser) {
-            const fetchData = async () => {
-                try {
-                    const querySnapshot = await getDocs(queries);
-                    const postsData = querySnapshot.docs.map(doc => {
-                        const data = doc.data();
-                        const likedBy = data.likedBy || [];
-                        const isLiked = currentUser ? likedBy.includes(currentUser.uid) : false;
-                        return {
-                            id: doc.id,
-                            displayName: data.displayName || "user",
-                            data: data,
-                            isLiked: isLiked,
-                            likedBy: likedBy
-                        };
-                    });
-                    setPosts(postsData);
-                    console.log("Fetched posts data:", postsData);
-                } catch (error) {
-                    console.error("Error fetching posts:", error);
-                }
-            };
-            fetchData();
+            fetchPosts();
         } else {
             setPosts([]);
         }
-    }, [currentUser]);
+    }, [currentUser, fetchPosts]);
 
     function displayDate(firebaseDate) {
         if (!firebaseDate) return '';
