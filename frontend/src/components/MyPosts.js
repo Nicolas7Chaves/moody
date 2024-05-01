@@ -1,7 +1,7 @@
 import './styles.scss';
 import { collection, getDocs, orderBy, query, where, deleteDoc, doc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { db, auth } from '../firebase-config';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { onAuthStateChanged } from "firebase/auth";
 import like from '../images/like.svg';
 import unlike from '../images/unlike.svg';
@@ -9,11 +9,10 @@ import unlike from '../images/unlike.svg';
 
 function MyPosts() {
     const [posts, setPosts] = useState([]);
-    const [active, setActive] = useState('');
     const [currentUser, setCurrentUser] = useState(null);
     const [isAnonymous, setIsAnonymous] = useState(false);
 
-    const fetchPosts = async () => {
+    const fetchPosts = useCallback( async () => {
         const postsRef = collection(db, "posts");
         const q = query(postsRef, where("uid", "==", auth.currentUser.uid), orderBy("createdAt", "desc"));
         try {
@@ -34,23 +33,23 @@ function MyPosts() {
         } catch (error) {
             console.error("Error fetching posts:", error);
         }
-    };
+    }, [currentUser]);
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
-            if (user) {
-                setActive('all');
-                setCurrentUser(user);
-                setIsAnonymous(user.isAnonymous);
-                fetchPosts();
-            } else {
-                setCurrentUser(null);
-                setIsAnonymous(false);
-                setPosts([]);
-            }
+            setIsAnonymous(user ? user.isAnonymous : false);
+            setCurrentUser(user);
         });
         return () => unsubscribe();
     }, []);
+
+    useEffect(() => {
+        if (currentUser) {
+            fetchPosts();
+        } else {
+            setPosts([]);
+        }
+    }, [currentUser, fetchPosts]);
 
     function displayDate(firebaseDate) {
         if (!firebaseDate) return '';
@@ -76,169 +75,6 @@ function MyPosts() {
         }
     }
 
-    const fetchPostsForToday = async () => {
-        setActive('today');
-        const startOfDay = new Date();
-        startOfDay.setHours(0, 0, 0, 0);
-
-        const endOfDay = new Date();
-        endOfDay.setHours(23, 59, 59, 999);
-
-        const postsRef = collection(db, "posts");
-
-        const q = query(postsRef, where("uid", "==", auth.currentUser.uid),
-            where("createdAt", ">=", startOfDay),
-            where("createdAt", "<=", endOfDay),
-            orderBy("createdAt", "desc")
-        );
-
-        try {
-            const querySnapshot = await getDocs(q);
-            console.log("Query snapshot:", querySnapshot.docs);
-            const postsData = querySnapshot.docs.map(doc => {
-                const data = doc.data();
-                const likedBy = data.likedBy || [];
-                const isLiked = likedBy.includes(auth.currentUser.uid);
-                return {
-                    id: doc.id,
-                    data: data,
-                    isLiked: isLiked,
-                    likedBy: likedBy
-                };
-            });
-            console.log("Posts data:", postsData);
-            if (postsData.length === 0) {
-                console.log("No posts found for today.");
-            } else {
-                setPosts(postsData);
-                console.log("Fetched today's posts:", postsData);
-            }
-        } catch (error) {
-            console.error("Error fetching today's posts:", error);
-        }
-    };
-
-
-
-
-    const fetchPostsForThisWeek = async () => {
-        setActive('week');
-        const today = new Date();
-        const startOfWeek = new Date(today);
-        startOfWeek.setDate(today.getDate() - today.getDay()); // Start of the week (Sunday)
-        const endOfWeek = new Date(today);
-        endOfWeek.setDate(today.getDate() + (6 - today.getDay())); // End of the week (Saturday)
-
-        const postsRef = collection(db, "posts");
-
-        const q = query(postsRef, where("uid", "==", auth.currentUser.uid),
-            where("createdAt", ">=", startOfWeek),
-            where("createdAt", "<=", endOfWeek),
-            orderBy("createdAt", "desc")
-        );
-
-        try {
-            const querySnapshot = await getDocs(q);
-            console.log("Query snapshot:", querySnapshot.docs);
-            const postsData = querySnapshot.docs.map(doc => {
-                const data = doc.data();
-                const likedBy = data.likedBy || [];
-                const isLiked = likedBy.includes(auth.currentUser.uid);
-                return {
-                    id: doc.id,
-                    data: data,
-                    isLiked: isLiked,
-                    likedBy: likedBy
-                };
-            });
-            console.log("Posts data:", postsData);
-            if (postsData.length === 0) {
-                console.log("No posts found for today.");
-            } else {
-                setPosts(postsData);
-                console.log("Fetched today's posts:", postsData);
-            }
-        } catch (error) {
-            console.error("Error fetching today's posts:", error);
-        }
-    };
-
-
-    const fetchPostsForThisMonth = async () => {
-        setActive('month');
-        const today = new Date();
-        const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-        const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
-
-        const postsRef = collection(db, "posts");
-
-        const q = query(postsRef, where("uid", "==", auth.currentUser.uid),
-            where("createdAt", ">=", startOfMonth),
-            where("createdAt", "<=", endOfMonth),
-            orderBy("createdAt", "desc")
-        );
-
-        try {
-            const querySnapshot = await getDocs(q);
-            console.log("Query snapshot:", querySnapshot.docs);
-            const postsData = querySnapshot.docs.map(doc => {
-                const data = doc.data();
-                const likedBy = data.likedBy || [];
-                const isLiked = likedBy.includes(auth.currentUser.uid);
-                return {
-                    id: doc.id,
-                    data: data,
-                    isLiked: isLiked,
-                    likedBy: likedBy
-                };
-            });
-            console.log("Posts data:", postsData);
-            if (postsData.length === 0) {
-                console.log("No posts found for today.");
-            } else {
-                setPosts(postsData);
-                console.log("Fetched today's posts:", postsData);
-            }
-        } catch (error) {
-            console.error("Error fetching today's posts:", error);
-        }
-    };
-
-
-    const fetchAllPosts = async () => {
-        setActive('all');
-        const postsRef = collection(db, "posts");
-
-        const q = query(postsRef, where("uid", "==", auth.currentUser.uid),
-            orderBy("createdAt", "desc")
-        );
-
-        try {
-            const querySnapshot = await getDocs(q);
-            console.log("Query snapshot:", querySnapshot.docs);
-            const postsData = querySnapshot.docs.map(doc => {
-                const data = doc.data();
-                const likedBy = data.likedBy || [];
-                const isLiked = likedBy.includes(auth.currentUser.uid);
-                return {
-                    id: doc.id,
-                    data: data,
-                    isLiked: isLiked,
-                    likedBy: likedBy
-                };
-            });
-            console.log("Posts data:", postsData);
-            if (postsData.length === 0) {
-                console.log("No posts found for today.");
-            } else {
-                setPosts(postsData);
-                console.log("Fetched today's posts:", postsData);
-            }
-        } catch (error) {
-            console.error("Error fetching today's posts:", error);
-        }
-    };
-
     const handleLike = async (post) => {
         if (!currentUser || isAnonymous) {
             console.log("No user logged in!");
@@ -261,12 +97,6 @@ function MyPosts() {
     return (
         <div className='my-posts'>
             <h1 className='my-posts__title'>My Posts</h1>
-            <div className='filter'>
-                <button className={`filter__button ${active === 'today' ? 'active' : ''}`} onClick={fetchPostsForToday}>Today</button>
-                <button className={`filter__button ${active === 'week' ? 'active' : ''}`} onClick={fetchPostsForThisWeek}>Week</button>
-                <button className={`filter__button ${active === 'month' ? 'active' : ''}`} onClick={fetchPostsForThisMonth}>Month</button>
-                <button className={`filter__button ${active === 'all' ? 'active' : ''}`} onClick={fetchAllPosts}>All</button>
-            </div>
             {posts.map(post => (
                 <div className='my-posts__post' key={post.id}>
                     <p className='my-posts__user'>You</p>
