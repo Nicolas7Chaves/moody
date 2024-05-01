@@ -33,7 +33,7 @@ function MyPosts() {
         } catch (error) {
             console.error("Error fetching posts:", error);
         }
-    }, [currentUser]);
+    }, []);
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
